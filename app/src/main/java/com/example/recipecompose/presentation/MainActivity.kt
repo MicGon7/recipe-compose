@@ -1,6 +1,5 @@
 package com.example.recipecompose.presentation
 
-import android.accessibilityservice.AccessibilityService
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -14,17 +13,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import dagger.hilt.android.AndroidEntryPoint
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavArgs
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.*
 import com.example.recipecompose.domain.model.Recipe
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -89,12 +87,11 @@ fun RecipeActivityScreen(viewModel: RecipeListViewModel) {
             composable(Screen.Home.route) { HomeScreen(viewModel, navController) }
             composable(Screen.Other.route) { Other() }
             composable(
-                "${Screen.RecipeDetail.route}/{recipeId}",
-                arguments = listOf(navArgument("recipeId") {
-                    // Not using optional args so this can remain empty
-                })
-            ) { backStackEntry ->
-                Recipe(backStackEntry.arguments?.getString("recipeId"))
+                Screen.RecipeDetail.route
+            ) {
+                val recipeModel =
+                    navController.previousBackStackEntry?.arguments?.getParcelable<Recipe>("recipe")
+                Recipe(recipe = recipeModel)
             }
         }
     }
@@ -120,6 +117,7 @@ fun HomeScreen(viewModel: RecipeListViewModel, navController: NavController) {
         ) {
             Text(text = "PERFORM SEARCH")
         }
+        // TODO: Need to find way to send callback to fetch a single recipe
         RecipeList(viewModel.recipes, navController)
 
     }
@@ -132,17 +130,21 @@ fun RecipeList(recipes: List<Recipe>, navController: NavController) {
             Text(
                 text = recipe.title, fontSize = 21.sp,
                 modifier = Modifier.clickable {
-                    navController.navigate("${Screen.RecipeDetail.route}/${recipe.id}")
+                    navController.currentBackStackEntry?.arguments?.putParcelable(
+                        Screen.RecipeDetail.route,
+                        recipe
+                    )
+                    navController.navigate(Screen.RecipeDetail.route)
                 })
         }
     }
 }
 
 @Composable
-fun Recipe(recipeId: String?) {
+fun Recipe(recipe: Recipe?) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
-            text = "This is with id $recipeId",
+            text = "This is ${recipe?.title} with id ${recipe?.id}",
             fontSize = 21.sp
         )
     }

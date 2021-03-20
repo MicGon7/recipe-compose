@@ -33,5 +33,4 @@ class RecipeListViewModel @Inject constructor(
             recipes = result
         }
     }
-
 }
