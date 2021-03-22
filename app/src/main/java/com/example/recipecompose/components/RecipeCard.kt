@@ -21,7 +21,7 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
             .padding(8.dp)
             .fillMaxWidth()
             .clickable { onClick() },
-        elevation = 8.dp
+        elevation = 12.dp
     ) {
         Column {
             CoilImage(
@@ -29,13 +29,13 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
                 contentDescription = "Recipe Picture",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .size(225.dp),
+                    .height(225.dp),
                 contentScale = ContentScale.Crop
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 12.dp, bottom = 12.dp, start = 8.dp, end = 8.dp)
+                    .padding(8.dp)
             ) {
                 Text(
                     text = recipe.title, modifier = Modifier
@@ -50,9 +50,7 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
                         .align(Alignment.CenterVertically), // rating text position is based on title
                     style = MaterialTheme.typography.h6
                 )
-
             }
         }
-
     }
 }

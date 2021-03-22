@@ -109,13 +109,16 @@ fun HomeScreen(viewModel: RecipeListViewModel, navController: NavController) {
 fun RecipeList(recipes: List<Recipe>, navController: NavController) {
     LazyColumn {
         items(recipes) { recipe ->
-            navController.currentBackStackEntry?.arguments?.putParcelable(
-                Screen.RecipeDetail.route,
-                recipe
-            )
             RecipeCard(
                 recipe = recipe,
-                onClick = { navController.navigate(Screen.RecipeDetail.route) })
+                onClick = {
+                    // Navigation must remain in callback to avoid being called during recomp
+                    navController.currentBackStackEntry?.arguments?.putParcelable(
+                        Screen.RecipeDetail.route,
+                        recipe
+                    )
+                    navController.navigate(Screen.RecipeDetail.route)
+                })
         }
     }
 }
