@@ -23,9 +23,13 @@ class RecipeListViewModel @Inject constructor(
     var recipes: List<Recipe> by mutableStateOf(listOf())
         private set
 
+    var query: String by mutableStateOf("")
+        private set
+
     init {
         newSearch()
     }
+
     private fun newSearch() {
         viewModelScope.launch {
             val result = repository.search(
@@ -35,5 +39,9 @@ class RecipeListViewModel @Inject constructor(
             )
             recipes = result
         }
+    }
+
+    fun onQueryChange(newQuery: String) {
+        query = newQuery
     }
 }
