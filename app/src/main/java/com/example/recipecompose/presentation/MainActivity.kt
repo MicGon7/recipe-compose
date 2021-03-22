@@ -4,10 +4,13 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -16,13 +19,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.*
+import com.example.recipecompose.components.RecipeCard
 import com.example.recipecompose.domain.model.Recipe
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.accompanist.coil.CoilImage
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -39,11 +46,7 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun RecipeActivityScreen(viewModel: RecipeListViewModel) {
     val navController = rememberNavController()
-    val items = listOf(
-        Screen.Home,
-        Screen.Other,
-    )
-
+    val bottomBarItems = listOf(Screen.Home, Screen.Other)
     Scaffold(
         topBar = {
             TopAppBar(
@@ -54,7 +57,7 @@ fun RecipeActivityScreen(viewModel: RecipeListViewModel) {
             BottomNavigation {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
-                items.forEach { screen ->
+                bottomBarItems.forEach { screen ->
                     val currentIcon = when (screen) {
                         Screen.Home -> Icons.Filled.Home
                         Screen.Other -> Icons.Filled.Favorite
@@ -86,12 +89,12 @@ fun RecipeActivityScreen(viewModel: RecipeListViewModel) {
         NavHost(navController, startDestination = Screen.Home.route) {
             composable(Screen.Home.route) { HomeScreen(viewModel, navController) }
             composable(Screen.Other.route) { Other() }
-            composable(
-                Screen.RecipeDetail.route
-            ) {
+            composable(Screen.RecipeDetail.route) {
+                // This is a workaround for a crash when using supported parcelable NavArg Type
                 val recipeModel =
-                    navController.previousBackStackEntry?.arguments?.getParcelable<Recipe>("recipe")
-                Recipe(recipe = recipeModel)
+                    navController.previousBackStackEntry?.arguments?.getParcelable<Recipe>(Screen.RecipeDetail.route)
+
+                RecipeDetail(recipe = recipeModel)
             }
         }
     }
@@ -99,49 +102,26 @@ fun RecipeActivityScreen(viewModel: RecipeListViewModel) {
 
 @Composable
 fun HomeScreen(viewModel: RecipeListViewModel, navController: NavController) {
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "RecipeList",
-            fontSize = 21.sp,
-        )
-        Spacer(modifier = Modifier.padding(4.dp))
-        Button(
-            onClick = {
-                viewModel.newSearch()
-            },
-        ) {
-            Text(text = "PERFORM SEARCH")
-        }
-        // TODO: Need to find way to send callback to fetch a single recipe
-        RecipeList(viewModel.recipes, navController)
-
-    }
+    RecipeList(viewModel.recipes, navController)
 }
 
 @Composable
 fun RecipeList(recipes: List<Recipe>, navController: NavController) {
     LazyColumn {
         items(recipes) { recipe ->
-            Text(
-                text = recipe.title, fontSize = 21.sp,
-                modifier = Modifier.clickable {
-                    navController.currentBackStackEntry?.arguments?.putParcelable(
-                        Screen.RecipeDetail.route,
-                        recipe
-                    )
-                    navController.navigate(Screen.RecipeDetail.route)
-                })
+            navController.currentBackStackEntry?.arguments?.putParcelable(
+                Screen.RecipeDetail.route,
+                recipe
+            )
+            RecipeCard(
+                recipe = recipe,
+                onClick = { navController.navigate(Screen.RecipeDetail.route) })
         }
     }
 }
 
 @Composable
-fun Recipe(recipe: Recipe?) {
+fun RecipeDetail(recipe: Recipe?) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
             text = "This is ${recipe?.title} with id ${recipe?.id}",
