@@ -1,20 +1,27 @@
 package com.example.recipecompose.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.recipecompose.R
 import com.example.recipecompose.domain.model.Recipe
+import com.example.recipecompose.ui.previewutil.mockRecipe
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
-fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
+fun RecipeCard(recipe: Recipe, onClick: () -> Unit, preview: Boolean = false) {
     Card(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier
@@ -24,14 +31,51 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
         elevation = 12.dp
     ) {
         Column {
-            CoilImage(
-                data = recipe.featuredImage,
-                contentDescription = "Recipe Picture",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(225.dp),
-                contentScale = ContentScale.Crop
-            )
+            val imageHeight = 225.dp
+
+
+            recipe.featuredImage?.let { url ->
+                // TODO: Remove preview check when Coil adds support for the preview feature.
+                if (!preview) {
+                    CoilImage(
+                        data = url,
+                        contentDescription = stringResource(R.string.recipe_image_cd),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(imageHeight),
+                        contentScale = ContentScale.Crop,
+                        error = {
+                            Image(
+                                painterResource(id = R.drawable.empty_plate),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(imageHeight)
+                            )
+                        },
+                        loading = {
+                            // TODO: Remove this as empty image will display instead
+                            Box(Modifier.matchParentSize()) {
+                                CircularProgressIndicator(
+                                    Modifier
+                                        .align(Alignment.Center)
+                                        .size(50.dp)
+                                )
+                            }
+                        }
+                    )
+                } else {
+                    Image(
+                        painterResource(id = R.drawable.featured_image),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(imageHeight),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+
+            }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -53,4 +97,15 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun RecipeCardPreview() {
+    RecipeCard(
+        recipe = mockRecipe,
+        onClick = {},
+        preview = true
+    )
+
 }

@@ -1,4 +1,4 @@
-package com.example.recipecompose.presentation
+package com.example.recipecompose.ui
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -13,8 +13,6 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.*
+import com.example.recipecompose.R
 import com.example.recipecompose.components.RecipeCard
 import com.example.recipecompose.domain.model.Recipe
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,18 +40,19 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun RecipeActivityScreen(viewModel: RecipeListViewModel) {
     val navController = rememberNavController()
-    val bottomBarItems = listOf(Screen.Home, Screen.Other)
+    val screens = listOf(Screen.Home, Screen.Other)
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Recipes App") },
+                title = { Text(text = stringResource(id = R.string.app_name)) },
             )
         },
         bottomBar = {
             BottomNavigation {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
-                bottomBarItems.forEach { screen ->
+
+                screens.forEach { screen ->
                     val currentIcon = when (screen) {
                         Screen.Home -> Icons.Filled.Home
                         Screen.Other -> Icons.Filled.Favorite
@@ -60,8 +60,9 @@ fun RecipeActivityScreen(viewModel: RecipeListViewModel) {
                             Icons.Filled.Home
                         }
                     }
+
                     BottomNavigationItem(
-                        // Requires contentDescription
+                        // Icon requires contentDescription
                         icon = { Icon(currentIcon, contentDescription = null) },
                         label = { Text(stringResource(screen.resourceId)) },
                         selected = currentRoute == screen.route,
@@ -84,7 +85,7 @@ fun RecipeActivityScreen(viewModel: RecipeListViewModel) {
         NavHost(navController, startDestination = Screen.Home.route) {
             composable(Screen.Home.route) {
                 HomeScreen(
-                    navController, // Replace this with lambda when parccelables are supported
+                    navController, // Replace this with lambda when parcelables are supported
                     viewModel.recipes,
                     viewModel.query,
                     viewModel::onQueryChange
@@ -160,3 +161,4 @@ fun Other() {
         )
     }
 }
+

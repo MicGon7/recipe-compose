@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">RecipeCompose</string>
+    <string name="app_name">Recipe Compose</string>
     <string name="home">Home</string>
     <string name="other">Other</string>
     <string name="recipes">Recipes</string>
     <string name="recipe_detail">Recipe</string>
+    <string name="recipe_image_cd">Recipe Picture</string>
 </resources>

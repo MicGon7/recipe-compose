@@ -23,7 +23,7 @@ class RecipeDtoMapper : DomainMapper<RecipeDto, Recipe> {
         return RecipeDto(
             pk = domainModel.id,
             title = domainModel.title,
-            featuredImage = domainModel.featuredImage,
+            featuredImage = domainModel.featuredImage ?: "",
             rating = domainModel.rating,
             publisher = domainModel.publisher,
             sourceUrl = domainModel.sourceUrl,

@@ -1,4 +1,4 @@
-package com.example.recipecompose.presentation
+package com.example.recipecompose.ui
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

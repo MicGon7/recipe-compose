@@ -4,13 +4,19 @@ import com.example.recipecompose.domain.model.Recipe
 import com.example.recipecompose.network.RecipeService
 import com.example.recipecompose.network.model.RecipeDtoMapper
 
-class RecipeRepositoryImpl (
+class RecipeRepositoryImpl(
     private val recipeService: RecipeService,
     private val mapper: RecipeDtoMapper,
-): RecipeRepository {
+) : RecipeRepository {
 
     override suspend fun search(token: String, page: Int, query: String): List<Recipe> {
-        return mapper.toDomainList(recipeService.search(token = token, page = page, query = query).recipes)
+        return mapper.toDomainList(
+            recipeService.search(
+                token = token,
+                page = page,
+                query = query
+            ).recipes
+        )
     }
 
     override suspend fun get(token: String, id: Int): Recipe {
