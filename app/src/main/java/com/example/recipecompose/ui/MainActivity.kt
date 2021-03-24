@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -15,14 +17,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.*
-import com.example.recipecompose.R
+import com.example.recipecompose.components.RecipeTopAppBar
 import com.example.recipecompose.components.RecipeCard
 import com.example.recipecompose.domain.model.Recipe
+import com.example.recipecompose.ui.recipelist.FoodCategory
+import com.example.recipecompose.ui.recipelist.components.FoodCategoryChip
+import com.example.recipecompose.ui.recipelist.getAllFoodCategories
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,9 +49,19 @@ fun RecipeActivityScreen(viewModel: RecipeListViewModel) {
     val screens = listOf(Screen.Home, Screen.Other)
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(id = R.string.app_name)) },
-            )
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colors.onPrimary,
+                elevation = 8.dp,
+            ) {
+                RecipeTopAppBar(
+                    query = viewModel.query,
+                    onQueryChange = viewModel::onQueryChange,
+                    onSearch = viewModel::newSearch,
+                    selectedCategory = viewModel.selectedCategory,
+                    onSelectCategory = viewModel::onSelectedCategory
+                )
+            }
         },
         bottomBar = {
             BottomNavigation {
@@ -87,8 +103,6 @@ fun RecipeActivityScreen(viewModel: RecipeListViewModel) {
                 HomeScreen(
                     navController, // Replace this with lambda when parcelables are supported
                     viewModel.recipes,
-                    viewModel.query,
-                    viewModel::onQueryChange
                 )
             }
             composable(Screen.Other.route) { Other() }
@@ -107,32 +121,19 @@ fun RecipeActivityScreen(viewModel: RecipeListViewModel) {
 fun HomeScreen(
     navController: NavController,
     recipes: List<Recipe>,
-    query: String,
-    onQueryChange: (String) -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .padding(8.dp)
-    ) {
-        TextField(
-            value = query,
-            onValueChange = { newQuery -> onQueryChange(newQuery) },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        LazyColumn {
-            items(recipes) { recipe ->
-                RecipeCard(
-                    recipe = recipe,
-                    onClick = {
-                        // Navigation must remain in callback to avoid being called during recomposition
-                        navController.currentBackStackEntry?.arguments?.putParcelable(
-                            Screen.RecipeDetail.route,
-                            recipe
-                        )
-                        navController.navigate(Screen.RecipeDetail.route)
-                    })
-            }
+    LazyColumn(modifier = Modifier.padding(8.dp)) {
+        items(recipes) { recipe ->
+            RecipeCard(
+                recipe = recipe,
+                onClick = {
+                    // Navigation must remain in callback to avoid being called during recomposition
+                    navController.currentBackStackEntry?.arguments?.putParcelable(
+                        Screen.RecipeDetail.route,
+                        recipe
+                    )
+                    navController.navigate(Screen.RecipeDetail.route)
+                })
         }
     }
 }
@@ -161,4 +162,3 @@ fun Other() {
         )
     }
 }
-

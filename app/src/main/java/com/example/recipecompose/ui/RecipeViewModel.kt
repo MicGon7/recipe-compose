@@ -1,5 +1,6 @@
 package com.example.recipecompose.ui
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -7,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipecompose.domain.model.Recipe
 import com.example.recipecompose.repository.RecipeRepository
+import com.example.recipecompose.ui.recipelist.FoodCategory
+import com.example.recipecompose.ui.recipelist.getFoodCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,19 +26,23 @@ class RecipeListViewModel @Inject constructor(
     var recipes: List<Recipe> by mutableStateOf(listOf())
         private set
 
-    var query: String by mutableStateOf("")
+    var query: String by mutableStateOf("chicken")
         private set
+
+    var selectedCategory: FoodCategory? by mutableStateOf(null)
+        private set
+
 
     init {
         newSearch()
     }
 
-    private fun newSearch() {
+    fun newSearch() {
         viewModelScope.launch {
             val result = repository.search(
                 token = token,
                 page = 1,
-                query = "chicken"
+                query = query
             )
             recipes = result
         }
@@ -43,5 +50,11 @@ class RecipeListViewModel @Inject constructor(
 
     fun onQueryChange(newQuery: String) {
         query = newQuery
+    }
+
+    fun onSelectedCategory(category: String) {
+        val newCategory = getFoodCategory(category)
+        selectedCategory = newCategory
+        onQueryChange(category)
     }
 }

@@ -123,14 +123,6 @@ val recipesJson = """
 """.trimIndent()
 
 
-fun getRecipeListFake(recipesJson: String): List<Recipe>? {
-    val moshi = Moshi.Builder().build()
-    val recipesData: Type = Types.newParameterizedType(List::class.java, Recipe::class.java)
-    val jsonAdapter: JsonAdapter<List<Recipe>> = moshi.adapter(recipesData)
-
-    return jsonAdapter.fromJson(recipesJson)
-
-}
 
 
 val mockRecipe = Recipe(
@@ -145,4 +137,21 @@ val mockRecipe = Recipe(
     dateUpdated = "November 11 2020"
 )
 
+val mockRecipeList: List<Recipe> = listOf(
+    mockRecipe,
+    mockRecipe,
+    mockRecipe,
+    mockRecipe,
+    mockRecipe
+)
 
+
+
+fun getRecipeListFake(recipesJson: String): List<Recipe>? {
+    val moshi = Moshi.Builder().build()
+    val recipesData: Type = Types.newParameterizedType(List::class.java, Recipe::class.java)
+    val jsonAdapter: JsonAdapter<List<Recipe>> = moshi.adapter(recipesData)
+
+    return jsonAdapter.fromJson(recipesJson)
+
+}
