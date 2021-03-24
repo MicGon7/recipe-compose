@@ -1,4 +1,4 @@
-package com.example.recipecompose.ui.recipelist.components
+package com.example.recipecompose.ui.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding

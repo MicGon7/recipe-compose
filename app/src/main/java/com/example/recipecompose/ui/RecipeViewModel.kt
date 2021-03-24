@@ -1,6 +1,5 @@
 package com.example.recipecompose.ui
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,9 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipecompose.domain.model.Recipe
 import com.example.recipecompose.repository.RecipeRepository
-import com.example.recipecompose.ui.recipelist.FoodCategory
-import com.example.recipecompose.ui.recipelist.getFoodCategory
+import com.example.recipecompose.ui.components.FoodCategory
+import com.example.recipecompose.ui.components.getFoodCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -32,6 +32,11 @@ class RecipeListViewModel @Inject constructor(
     var selectedCategory: FoodCategory? by mutableStateOf(null)
         private set
 
+    var categoryScrollPosition = 0
+        private set
+
+    var loading by mutableStateOf(false)
+        private set
 
     init {
         newSearch()
@@ -39,12 +44,17 @@ class RecipeListViewModel @Inject constructor(
 
     fun newSearch() {
         viewModelScope.launch {
+            loading = true
+            resetSearchState()
+            delay(2000)
             val result = repository.search(
                 token = token,
                 page = 1,
                 query = query
             )
             recipes = result
+
+            loading = false
         }
     }
 
@@ -52,9 +62,23 @@ class RecipeListViewModel @Inject constructor(
         query = newQuery
     }
 
-    fun onSelectedCategory(category: String) {
+    fun onSelectedCategoryChange(category: String) {
         val newCategory = getFoodCategory(category)
         selectedCategory = newCategory
         onQueryChange(category)
+    }
+
+    fun onScrollPositionChange(position: Int) {
+        categoryScrollPosition = position
+    }
+
+    private fun clearSelectedCategory() {
+        selectedCategory = null
+    }
+    private fun resetSearchState() {
+        recipes = listOf()
+        if(selectedCategory?.value != query) {
+            clearSelectedCategory()
+        }
     }
 }

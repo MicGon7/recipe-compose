@@ -1,6 +1,6 @@
-package com.example.recipecompose.ui.recipelist
+package com.example.recipecompose.ui.components
 
-import com.example.recipecompose.ui.recipelist.FoodCategory.*
+import com.example.recipecompose.ui.components.FoodCategory.*
 
 enum class FoodCategory(val value: String) {
     CHICKEN("Chicken"),
