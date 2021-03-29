@@ -20,24 +20,37 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.*
+import com.example.recipecompose.BaseApplication
 import com.example.recipecompose.domain.model.Recipe
-import com.example.recipecompose.ui.components.*
+import com.example.recipecompose.ui.components.CircularIndeterminateProgressBar
+import com.example.recipecompose.ui.components.LoadingRecipeList
+import com.example.recipecompose.ui.components.RecipeCard
+import com.example.recipecompose.ui.components.SearchAppBar
+import com.example.recipecompose.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+
+// Temp until DateStore impl
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    @Inject
+    lateinit var baseApplication: BaseApplication
+
     private val viewModel: RecipeListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            RecipeActivityScreen(viewModel)
+            AppTheme(darkTheme = baseApplication.isDark) {
+                RecipeActivityScreen(viewModel, baseApplication)
+            }
         }
     }
 }
 
 @Composable
-fun RecipeActivityScreen(viewModel: RecipeListViewModel) {
+fun RecipeActivityScreen(viewModel: RecipeListViewModel, baseApplication: BaseApplication) {
     val navController = rememberNavController()
     val screens = listOf(Screen.Home, Screen.Other)
     Scaffold(
@@ -54,7 +67,10 @@ fun RecipeActivityScreen(viewModel: RecipeListViewModel) {
                     onSelectCategoryChange = viewModel::onSelectedCategoryChange,
                     onSearch = viewModel::newSearch,
                     scrollPosition = viewModel.categoryScrollPosition,
-                    onScrollPositionChange = viewModel::onScrollPositionChange
+                    onScrollPositionChange = viewModel::onScrollPositionChange,
+                    onToggleTheme = {
+                        baseApplication.toggleLightTheme()
+                    }
                 )
             }
         },
