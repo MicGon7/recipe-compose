@@ -46,7 +46,7 @@ class RecipeListViewModel @Inject constructor(
         viewModelScope.launch {
             loading = true
             resetSearchState()
-            delay(1000)
+            delay(3000)
             val result = repository.search(
                 token = token,
                 page = 1,

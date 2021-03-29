@@ -4,12 +4,9 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -122,30 +119,33 @@ fun HomeScreen(
     recipes: List<Recipe>,
     loading: Boolean
 ) {
-
-    AnimatedHeartButton()
     // Box allows for overlay of composables--last composables shown on top
-//    Box(
-//        modifier = Modifier.fillMaxSize()
-//    ) {
-//        LazyColumn(
-//            modifier = Modifier.padding(8.dp),
-//        ) {
-//            items(recipes) { recipe ->
-//                RecipeCard(
-//                    recipe = recipe,
-//                    onClick = {
-//                        // Navigation must remain in callback to avoid being called during recomposition
-//                        navController.currentBackStackEntry?.arguments?.putParcelable(
-//                            Screen.RecipeDetail.route,
-//                            recipe
-//                        )
-//                        navController.navigate(Screen.RecipeDetail.route)
-//                    })
-//            }
-//        }
-//        CircularIndeterminateProgressBar(isDisplayed = loading)
-//    }
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        if (loading) {
+            LoadingRecipeList(imageSize = 250.dp)
+        } else {
+            LazyColumn(
+                modifier = Modifier.padding(8.dp),
+            ) {
+                items(recipes) { recipe ->
+                    RecipeCard(
+                        recipe = recipe,
+                        onClick = {
+                            // Navigation must remain in callback to avoid being called during recomposition
+                            navController.currentBackStackEntry?.arguments?.putParcelable(
+                                Screen.RecipeDetail.route,
+                                recipe
+                            )
+                            navController.navigate(Screen.RecipeDetail.route)
+                        })
+                }
+            }
+        }
+        CircularIndeterminateProgressBar(isDisplayed = loading, verticalBias = 0.4f)
+
+    }
 }
 
 @Composable

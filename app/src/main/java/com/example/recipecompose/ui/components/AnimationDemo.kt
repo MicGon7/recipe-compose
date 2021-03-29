@@ -6,17 +6,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush.Companion.linearGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.Color.Companion.LightGray
+import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -28,7 +29,7 @@ import com.example.recipecompose.R
 @Composable
 fun AnimateAsStateDemo() {
     var blue by remember { mutableStateOf(true) }
-    val color by animateColorAsState(if (blue) Color.Blue else Color.Yellow)
+    val color by animateColorAsState(if (blue) Blue else Color.Yellow)
 
     DemoColumn {
         Button(
@@ -225,6 +226,31 @@ fun DemoColumn(
         content()
     }
 
+}
+
+@Composable
+fun GradientDemo() {
+    val colors = listOf(
+        Blue,
+        Red,
+        Blue
+    )
+
+    val brush = linearGradient(
+        colors = colors,
+        start = Offset(200f, 200f),
+        end = Offset(400f, 400f)
+    )
+
+    Surface(
+        shape = MaterialTheme.shapes.small
+    ) {
+        Spacer(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(brush = brush)
+        )
+    }
 }
 
 @Composable
