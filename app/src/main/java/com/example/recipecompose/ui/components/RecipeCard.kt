@@ -24,14 +24,13 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit, preview: Boolean = false) {
     Card(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier
-            .padding(8.dp)
+            .padding(12.dp)
             .fillMaxWidth()
             .clickable { onClick() },
         elevation = 12.dp
     ) {
         Column {
             val imageHeight = 225.dp
-
 
             recipe.featuredImage?.let { url ->
                 // TODO: Remove preview check when Coil adds support for the preview feature.
@@ -74,14 +73,14 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit, preview: Boolean = false) {
                     text = recipe.title, modifier = Modifier
                         .fillMaxWidth(0.85f) // occupy entire width up to 85%
                         .wrapContentWidth(Alignment.Start),
-                    style = MaterialTheme.typography.h5
+                    style = MaterialTheme.typography.h3
                 )
                 Text(
                     text = recipe.rating.toString(), modifier = Modifier
                         .fillMaxWidth() // 15% because of title max width
                         .wrapContentWidth(Alignment.End)
                         .align(Alignment.CenterVertically), // rating text position is based on title
-                    style = MaterialTheme.typography.h6
+                    style = MaterialTheme.typography.h5
                 )
             }
         }

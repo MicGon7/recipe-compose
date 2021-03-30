@@ -4,9 +4,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 
@@ -16,7 +13,7 @@ private val LightThemeColors = lightColors(
     onPrimary = White,
     secondary = White,
     secondaryVariant = Teal300,
-    onSecondary = Black1,
+    onSecondary = Black,
     error = RedErrorDark,
     onError = RedErrorLight,
     background = Grey1,
@@ -45,6 +42,8 @@ fun AppTheme(
 ) {
     MaterialTheme(
         colors = if (darkTheme) DarkThemeColors else LightThemeColors,
+        typography = QuickSandTypography,
+        shapes = AppShapes
     ) {
         content()
     }

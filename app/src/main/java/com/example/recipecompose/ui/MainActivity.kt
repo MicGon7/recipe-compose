@@ -7,33 +7,30 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigate
+import androidx.navigation.compose.rememberNavController
 import com.example.recipecompose.BaseApplication
 import com.example.recipecompose.domain.model.Recipe
-import com.example.recipecompose.ui.components.CircularIndeterminateProgressBar
-import com.example.recipecompose.ui.components.LoadingRecipeList
-import com.example.recipecompose.ui.components.RecipeCard
-import com.example.recipecompose.ui.components.SearchAppBar
+import com.example.recipecompose.ui.components.*
 import com.example.recipecompose.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-// Temp until DateStore impl
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    // Temp until DateStore impl
     @Inject
     lateinit var baseApplication: BaseApplication
 
@@ -53,61 +50,26 @@ class MainActivity : AppCompatActivity() {
 fun RecipeActivityScreen(viewModel: RecipeListViewModel, baseApplication: BaseApplication) {
     val navController = rememberNavController()
     val screens = listOf(Screen.Home, Screen.Other)
+
     Scaffold(
         topBar = {
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colors.onPrimary,
-                elevation = 8.dp,
-            ) {
-                SearchAppBar(
-                    query = viewModel.query,
-                    onQueryChange = viewModel::onQueryChange,
-                    selectedCategory = viewModel.selectedCategory,
-                    onSelectCategoryChange = viewModel::onSelectedCategoryChange,
-                    onSearch = viewModel::newSearch,
-                    scrollPosition = viewModel.categoryScrollPosition,
-                    onScrollPositionChange = viewModel::onScrollPositionChange,
-                    onToggleTheme = {
-                        baseApplication.toggleLightTheme()
-                    }
-                )
-            }
+            SearchAppBar(
+                query = viewModel.query,
+                onQueryChange = viewModel::onQueryChange,
+                selectedCategory = viewModel.selectedCategory,
+                onSelectCategoryChange = viewModel::onSelectedCategoryChange,
+                onSearch = viewModel::newSearch,
+                scrollPosition = viewModel.categoryScrollPosition,
+                onScrollPositionChange = viewModel::onScrollPositionChange,
+                onToggleTheme = {
+                    baseApplication.toggleLightTheme()
+                }
+            )
         },
         bottomBar = {
-            BottomNavigation {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
-
-                screens.forEach { screen ->
-                    val currentIcon = when (screen) {
-                        Screen.Home -> Icons.Filled.Home
-                        Screen.Other -> Icons.Filled.Favorite
-                        else -> {
-                            Icons.Filled.Home
-                        }
-                    }
-
-                    BottomNavigationItem(
-                        // Icon requires contentDescription
-                        icon = { Icon(currentIcon, contentDescription = null) },
-                        label = { Text(stringResource(screen.resourceId)) },
-                        selected = currentRoute == screen.route,
-                        onClick = {
-                            navController.navigate(screen.route) {
-                                // Pop up to the start destination of the graph to
-                                // avoid building up a large stack of destinations
-                                // on the back stack as users select items
-                                popUpTo = navController.graph.startDestination
-                                // Avoid multiple copies of the same destination when
-                                // reselecting the same item
-                                launchSingleTop = true
-                            }
-                        }
-                    )
-                }
-            }
-        }
+            BottomNavBar(navController, screens)
+        },
+        drawerContent = { NavDrawer() }
     ) {
         NavHost(navController, startDestination = Screen.Home.route) {
             composable(Screen.Home.route) {
@@ -137,14 +99,14 @@ fun HomeScreen(
 ) {
     // Box allows for overlay of composables--last composables shown on top
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 52.dp) // place above bottom bar
     ) {
         if (loading) {
             LoadingRecipeList(imageSize = 250.dp)
         } else {
-            LazyColumn(
-                modifier = Modifier.padding(8.dp),
-            ) {
+            LazyColumn {
                 items(recipes) { recipe ->
                     RecipeCard(
                         recipe = recipe,
@@ -160,7 +122,6 @@ fun HomeScreen(
             }
         }
         CircularIndeterminateProgressBar(isDisplayed = loading, verticalBias = 0.4f)
-
     }
 }
 
@@ -174,6 +135,7 @@ fun RecipeDetail(recipe: Recipe?) {
     }
 }
 
+// Feature UI Demo Composables
 @Composable
 fun Other() {
     Column(
@@ -186,5 +148,16 @@ fun Other() {
             text = "Other Screen", modifier = Modifier.align(Alignment.CenterHorizontally),
             fontSize = 21.sp
         )
+    }
+}
+
+@Composable
+fun NavDrawer() {
+    Column() {
+        Text(text = "Item 1")
+        Text(text = "Item 2")
+        Text(text = "Item 3")
+        Text(text = "Item 4")
+        Text(text = "Item 5")
     }
 }
