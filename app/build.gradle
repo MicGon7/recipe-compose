@@ -67,6 +67,7 @@ dependencies {
 
     implementation "androidx.navigation:navigation-compose:1.0.0-alpha09"
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha01'
 
     def moshi = "1.11.0"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi"

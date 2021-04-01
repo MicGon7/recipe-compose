@@ -32,14 +32,17 @@ class RecipeViewModel @Inject constructor(
 
     fun onTriggerEvent(event: RecipeEvent) {
         viewModelScope.launch {
+            loading = true
             try {
                 when (event) {
                     is GetRecipeEvent -> {
                         if (recipe == null) {
                             getRecipe(event.id)
                         }
+                        loading = false
                     }
                 }
+
 
             } catch (e: Exception) {
                 Log.d(TAG, "onTriggerEvent: Exception $e, ${e.cause}")

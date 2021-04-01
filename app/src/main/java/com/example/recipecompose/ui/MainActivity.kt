@@ -8,14 +8,19 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.navigation.NavArgs
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.example.recipecompose.BaseApplication
 import com.example.recipecompose.domain.model.Recipe
 import com.example.recipecompose.ui.components.*
 import com.example.recipecompose.ui.recipe.Other
 import com.example.recipecompose.ui.recipe.RecipeDetail
+import com.example.recipecompose.ui.recipe.RecipeViewModel
 import com.example.recipecompose.ui.recipelist.events.RecipeListEvent.NewSearchEvent
 import com.example.recipecompose.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -96,12 +101,14 @@ fun RecipeActivityScreen(viewModel: RecipeListViewModel, baseApplication: BaseAp
                 )
             }
             composable(Screen.Other.route) { Other() }
-            composable(Screen.RecipeDetail.route) {
-                // This is a workaround for a crash when using supported parcelable NavArg Type
-                val recipeModel =
-                    navController.previousBackStackEntry?.arguments?.getParcelable<Recipe>(Screen.RecipeDetail.route)
+            composable(
+                route = "${Screen.RecipeDetail.route}/{recipeId}",
+                arguments = listOf(navArgument("recipeId") { type = NavType.IntType})
+            ) { backStackEntry ->
+                val recipeId = backStackEntry.arguments?.getInt("recipeId") ?: -1
 
-                RecipeDetail(recipe = recipeModel)
+                val recipeViewModel = hiltNavGraphViewModel<RecipeViewModel>()
+                RecipeDetail(recipeViewModel, recipeId)
             }
         }
     }

@@ -46,12 +46,7 @@ fun RecipeList(
                     RecipeCard(
                         recipe = recipe,
                         onClick = {
-                            // Navigation must remain in callback to avoid being called during recomposition
-                            navController.currentBackStackEntry?.arguments?.putParcelable(
-                                Screen.RecipeDetail.route,
-                                recipe
-                            )
-                            navController.navigate(Screen.RecipeDetail.route)
+                            navController.navigate("${Screen.RecipeDetail.route}/${recipe.id}")
                         })
                 }
             }
