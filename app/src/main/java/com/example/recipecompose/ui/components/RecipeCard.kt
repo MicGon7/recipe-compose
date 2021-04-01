@@ -12,11 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.recipecompose.R
 import com.example.recipecompose.domain.model.Recipe
-import com.example.recipecompose.ui.previewutil.mockRecipe
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
@@ -85,15 +83,4 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit, preview: Boolean = false) {
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun RecipeCardPreview() {
-    RecipeCard(
-        recipe = mockRecipe,
-        onClick = {},
-        preview = true
-    )
-
 }

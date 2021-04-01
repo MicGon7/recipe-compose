@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.recipecompose.R
@@ -24,7 +25,7 @@ val QuickSandTypography = Typography(
     ),
     h2 = TextStyle(
         fontFamily = QuickSand,
-        fontWeight = FontWeight.W500,
+        fontWeight = FontWeight.W700,
         fontSize = 24.sp
     ),
     h3 = TextStyle(
