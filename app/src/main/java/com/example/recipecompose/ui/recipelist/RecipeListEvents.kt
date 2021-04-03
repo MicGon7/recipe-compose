@@ -1,7 +1,6 @@
-package com.example.recipecompose.ui.recipelist.events
+package com.example.recipecompose.ui.recipelist
 
 sealed class RecipeListEvent {
     object NewSearchEvent : RecipeListEvent()
-
     object NextPageEvent : RecipeListEvent()
 }

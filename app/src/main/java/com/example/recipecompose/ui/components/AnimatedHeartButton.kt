@@ -16,10 +16,10 @@ import com.example.recipecompose.R
 
 
 @Composable
-fun AnimatedHeartButton() {
+fun AnimatedHeartButton(modifier: Modifier = Modifier) {
     var heartState by remember { mutableStateOf(HeartState.Idle) }
-    val idleImageSize = 50.dp
-    val activeImageSize = 55.dp
+    val idleImageSize = 40.dp
+    val activeImageSize = 45.dp
 
     val transition = updateTransition(targetState = heartState, label = "Heart")
     val imageSize by transition.animateDp(
@@ -38,33 +38,30 @@ fun AnimatedHeartButton() {
         }
     }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Crossfade(
-            targetState = heartState,
-            animationSpec = tween(durationMillis = 1000),
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        ) { state ->
-            when (state) {
-                HeartState.Idle -> Image(
-                    painter = painterResource(id = R.drawable.heart_grey),
-                    contentDescription = "Gray Heart",
-                    modifier = Modifier
-                        .size(imageSize)
-                        .clickable {
-                            heartState = HeartState.Active
-                        }
+    Crossfade(
+        targetState = heartState,
+        animationSpec = tween(durationMillis = 1000),
+    ) { state ->
+        when (state) {
+            HeartState.Idle -> Image(
+                painter = painterResource(id = R.drawable.heart_grey),
+                contentDescription = "Gray Heart",
+                modifier = Modifier
+                    .size(imageSize)
+                    .clickable {
+                        heartState = HeartState.Active
+                    }
 
-                )
-                HeartState.Active -> Image(
-                    painter = painterResource(id = R.drawable.heart_red),
-                    contentDescription = "Red Heart",
-                    modifier = Modifier
-                        .size(imageSize)
-                        .clickable {
-                            heartState = HeartState.Idle
-                        }
-                )
-            }
+            )
+            HeartState.Active -> Image(
+                painter = painterResource(id = R.drawable.heart_red),
+                contentDescription = "Red Heart",
+                modifier = modifier
+                    .size(imageSize)
+                    .clickable {
+                        heartState = HeartState.Idle
+                    }
+            )
         }
     }
 }

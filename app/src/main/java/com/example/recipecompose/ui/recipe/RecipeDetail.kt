@@ -16,22 +16,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.recipecompose.R
-import com.example.recipecompose.ui.components.LoadingRecipeList
+import com.example.recipecompose.ui.recipelist.LoadingRecipeList
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
 fun RecipeDetail(
-    viewModel: RecipeViewModel = viewModel(),
-    recipeId: Int
+    viewModel: RecipeViewModel = viewModel()
 ) {
-    val recipe = viewModel.recipe
     val scrollState = rememberScrollState()
-    val loading = viewModel.loading
 
-    viewModel.onTriggerEvent(RecipeEvent.GetRecipeEvent(recipeId))
-
-    if (loading) {
-        LoadingRecipeList(imageSize = 250.dp)
+    if (viewModel.loading) {
+        LoadingRecipeDetail(imageSize = 250.dp)
     } else {
         Column(
             modifier = Modifier
@@ -39,7 +34,7 @@ fun RecipeDetail(
                 .padding(2.dp)
                 .verticalScroll(scrollState)
         ) {
-            recipe?.let {
+            viewModel.recipe?.let { recipe ->
                 CoilImage(
                     data = recipe.featuredImage ?: "",
                     contentDescription = stringResource(R.string.recipe_image_cd),
@@ -82,7 +77,7 @@ fun RecipeDetail(
                         color = MaterialTheme.colors.onSurface.copy(alpha = .5f)
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    recipe?.ingredients.forEach { ingredient ->
+                    recipe.ingredients.forEach { ingredient ->
                         Text(
                             text = ingredient,
                             style = MaterialTheme.typography.h5

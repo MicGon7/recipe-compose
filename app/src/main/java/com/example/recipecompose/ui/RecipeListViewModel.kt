@@ -10,8 +10,8 @@ import com.example.recipecompose.domain.model.Recipe
 import com.example.recipecompose.repository.RecipeRepository
 import com.example.recipecompose.ui.components.FoodCategory
 import com.example.recipecompose.ui.components.getFoodCategory
-import com.example.recipecompose.ui.recipelist.events.RecipeListEvent
-import com.example.recipecompose.ui.recipelist.events.RecipeListEvent.*
+import com.example.recipecompose.ui.recipelist.RecipeListEvent
+import com.example.recipecompose.ui.recipelist.RecipeListEvent.*
 import com.example.recipecompose.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -19,6 +19,8 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Named
+
+const val PAGE_SIZE = 30
 
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(
@@ -40,6 +42,9 @@ class RecipeListViewModel @Inject constructor(
         private set
 
     var loading by mutableStateOf(false)
+        private set
+
+    var showDetail by mutableStateOf(false)
         private set
 
     var page by mutableStateOf(1)
@@ -65,9 +70,7 @@ class RecipeListViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.e(TAG, "onTriggerEvent: Exception: ${e}, ${e.cause}")
             }
-
         }
-
     }
 
     // Usecase #1
@@ -156,6 +159,8 @@ class RecipeListViewModel @Inject constructor(
             clearSelectedCategory()
         }
     }
-}
 
-const val PAGE_SIZE = 30
+    fun onShowDetail(showDetail: Boolean) {
+        this.showDetail = showDetail
+    }
+}

@@ -63,6 +63,7 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit, preview: Boolean = false) {
 
             }
             Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)

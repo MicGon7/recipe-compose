@@ -2,29 +2,25 @@ package com.example.recipecompose.ui
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.*
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
-import androidx.navigation.NavArgs
 import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.*
 import com.example.recipecompose.BaseApplication
-import com.example.recipecompose.domain.model.Recipe
-import com.example.recipecompose.ui.components.*
+import com.example.recipecompose.ui.components.BottomNavBar
+import com.example.recipecompose.ui.recipelist.RecipeList
+import com.example.recipecompose.ui.components.SearchAppBar
 import com.example.recipecompose.ui.recipe.Other
 import com.example.recipecompose.ui.recipe.RecipeDetail
+import com.example.recipecompose.ui.recipe.RecipeEvent
 import com.example.recipecompose.ui.recipe.RecipeViewModel
-import com.example.recipecompose.ui.recipelist.events.RecipeListEvent.NewSearchEvent
 import com.example.recipecompose.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -35,80 +31,95 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var baseApplication: BaseApplication
 
-    private val viewModel: RecipeListViewModel by viewModels()
-
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AppTheme(darkTheme = baseApplication.isDark) {
-                RecipeActivityScreen(viewModel, baseApplication)
-            }
+            RecipeApp(baseApplication)
         }
     }
 }
 
+@ExperimentalAnimationApi
 @Composable
-fun RecipeActivityScreen(viewModel: RecipeListViewModel, baseApplication: BaseApplication) {
+fun RecipeApp(baseApplication: BaseApplication) {
     val navController = rememberNavController()
     val screens = listOf(Screen.Home, Screen.Other)
     val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
+    val recipeListViewModel = hiltNavGraphViewModel<RecipeListViewModel>()
 
-    Scaffold(
-        topBar = {
-            SearchAppBar(
-                query = viewModel.query,
-                onQueryChange = viewModel::onQueryChange,
-                selectedCategory = viewModel.selectedCategory,
-                onSelectCategoryChange = viewModel::onSelectedCategoryChange,
-                onSearch = {
-                    if (viewModel.selectedCategory?.value == "Milk") {
-                        scope.launch {
-                            scaffoldState.snackbarHostState.showSnackbar(
-                                message = "Invalid Category: MILK!",
-                                actionLabel = "Hide"
-                            )
-                        }
-                    } else {
-                        viewModel.onTriggerEvent(NewSearchEvent)
-                    }
-                },
-                scrollPosition = viewModel.categoryScrollPosition,
-                onScrollPositionChange = viewModel::onScrollPositionChange,
-                onToggleTheme = {
-                    baseApplication.toggleLightTheme()
-                }
-            )
-        },
-        bottomBar = {
-            BottomNavBar(navController, screens)
-        },
+    AppTheme(
+        displayProgressBar = recipeListViewModel.loading,
         scaffoldState = scaffoldState,
-        snackbarHost = {
-            scaffoldState.snackbarHostState
-        },
-    ) {
-        NavHost(navController, startDestination = Screen.Home.route) {
-            composable(Screen.Home.route) {
-                RecipeList(
-                    navController, // Replace this with lambda when parcelables are supported
-                    viewModel.recipes,
-                    viewModel.loading,
-                    scaffoldState.snackbarHostState,
-                    viewModel.page,
-                    viewModel::onChangeRecipeScrollPosition,
-                    viewModel::onTriggerEvent
-                )
-            }
-            composable(Screen.Other.route) { Other() }
-            composable(
-                route = "${Screen.RecipeDetail.route}/{recipeId}",
-                arguments = listOf(navArgument("recipeId") { type = NavType.IntType})
-            ) { backStackEntry ->
-                val recipeId = backStackEntry.arguments?.getInt("recipeId") ?: -1
+        darkTheme = baseApplication.isDark
 
-                val recipeViewModel = hiltNavGraphViewModel<RecipeViewModel>()
-                RecipeDetail(recipeViewModel, recipeId)
+    ) {
+        Scaffold(
+            topBar = {
+                AnimatedVisibility(
+                    visible = !recipeListViewModel.showDetail,
+                    enter = slideInVertically(initialOffsetY = { -40 })
+                            + expandVertically(expandFrom = Alignment.Top) + fadeIn(initialAlpha = 0.3f),
+                    exit = slideOutVertically() + shrinkVertically() + fadeOut()
+                ) {
+                    SearchAppBar(
+                        query = recipeListViewModel.query,
+                        onQueryChange = recipeListViewModel::onQueryChange,
+                        selectedCategory = recipeListViewModel.selectedCategory,
+                        onSelectCategoryChange = recipeListViewModel::onSelectedCategoryChange,
+                        onNewSearchEvent = recipeListViewModel::onTriggerEvent,
+                        scrollPosition = recipeListViewModel.categoryScrollPosition,
+                        onScrollPositionChange = recipeListViewModel::onScrollPositionChange,
+                        onToggleTheme = {
+                            baseApplication.toggleLightTheme()
+                        },
+                    )
+                }
+            },
+            bottomBar = {
+                AnimatedVisibility(
+                    !recipeListViewModel.showDetail,
+                    enter = slideInVertically(initialOffsetY = { -40 })
+                            + expandVertically(expandFrom = Alignment.Bottom) + fadeIn(initialAlpha = 0.3f),
+                    exit = slideOutVertically() + shrinkVertically() + fadeOut()
+                ) {
+                    BottomNavBar(
+                        navController,
+                        screens
+                    )
+                }
+            },
+            scaffoldState = scaffoldState,
+            snackbarHost = {
+                scaffoldState.snackbarHostState
+            },
+        ) {
+            NavHost(navController, startDestination = Screen.Home.route) {
+                composable(Screen.Home.route) {
+                    recipeListViewModel.onShowDetail(false)
+
+                    RecipeList(
+                        recipeListViewModel,
+                        scaffoldState.snackbarHostState,
+                    ) { recipeId ->
+                        navController.navigate("${Screen.RecipeDetail.route}/$recipeId")
+                    }
+                }
+                composable(Screen.Other.route) { Other() }
+                composable(
+                    route = "${Screen.RecipeDetail.route}/{recipeId}",
+                    arguments = listOf(navArgument("recipeId") { type = NavType.IntType })
+                ) { backStackEntry ->
+                    val recipeId = backStackEntry.arguments?.getInt("recipeId") ?: -1
+                    val recipeViewModel = hiltNavGraphViewModel<RecipeViewModel>()
+
+                    // Set the current recipe in the viewModel using it in navigation destination
+                    recipeViewModel.onTriggerEvent(RecipeEvent.GetRecipeEvent(recipeId))
+
+                    recipeListViewModel.onShowDetail(true)
+
+                    RecipeDetail(recipeViewModel)
+                }
             }
         }
     }

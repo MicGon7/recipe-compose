@@ -1,5 +1,6 @@
 package com.example.recipecompose.ui.components
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,8 +25,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.recipecompose.R
+import com.example.recipecompose.ui.recipelist.RecipeListEvent
 import kotlinx.coroutines.launch
 
+@ExperimentalAnimationApi
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchAppBar(
@@ -34,10 +37,10 @@ fun SearchAppBar(
     onQueryChange: (String) -> Unit,
     selectedCategory: FoodCategory?,
     onSelectCategoryChange: (String) -> Unit,
-    onSearch: () -> Unit,
+    onNewSearchEvent: (RecipeListEvent) -> Unit,
     scrollPosition: Int,
     onScrollPositionChange: (Int) -> Unit,
-    onToggleTheme: () -> Unit
+    onToggleTheme: () -> Unit,
 ) {
     // Can also use LocalFocusManager which is not experimental (but this is future)
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -67,7 +70,7 @@ fun SearchAppBar(
                         imeAction = ImeAction.Search//  Set (submit) icon to Magnify Glass
                     ),
                     keyboardActions = KeyboardActions(onSearch = {
-                        onSearch()
+                        onNewSearchEvent(RecipeListEvent.NewSearchEvent)
                         keyboardController?.hideSoftwareKeyboard()
                     }) {}
                 )
@@ -97,7 +100,7 @@ fun SearchAppBar(
                             onScrollPositionChange(scrollState.value)
                         },
                         onSearch = {
-                            onSearch()
+                            onNewSearchEvent(RecipeListEvent.NewSearchEvent)
                         }
                     )
                 }

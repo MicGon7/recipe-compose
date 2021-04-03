@@ -1,4 +1,4 @@
-package com.example.recipecompose.ui.recipelist
+package com.example.recipecompose.ui.recipe
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,9 +8,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.recipecompose.ui.components.ShimmerRecipeCardItem
+import com.example.recipecompose.ui.components.ShimmerRecipeDetail
 
 @Composable
-fun LoadingRecipeList(imageSize: Dp) {
+fun LoadingRecipeDetail(imageSize: Dp) {
     val transition = rememberInfiniteTransition()
     val initialValue = 200f
     val targetValue = 2000f
@@ -37,16 +38,12 @@ fun LoadingRecipeList(imageSize: Dp) {
         Color.LightGray.copy(alpha = .9f),
     )
 
-    LazyColumn {
-        items(5) {
-            ShimmerRecipeCardItem(
-                colors = colors,
-                cardHeight = imageSize,
-                xShimmerAnim = xTransitionAnim,
-                yShimmerAnim = yTransitionAnim,
-                gradientWidth = 200f,
-                padding = 16.dp
-            )
-        }
-    }
+    ShimmerRecipeDetail(
+        colors = colors,
+        cardHeight = imageSize,
+        xShimmerAnim = xTransitionAnim,
+        yShimmerAnim = yTransitionAnim,
+        gradientWidth = 200f,
+        padding = 16.dp
+    )
 }
