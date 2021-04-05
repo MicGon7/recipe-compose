@@ -1,4 +1,4 @@
-package com.example.recipecompose.ui
+package com.example.recipecompose.ui.home
 
 import android.util.Log
 import androidx.compose.runtime.getValue

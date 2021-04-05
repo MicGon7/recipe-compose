@@ -1,4 +1,4 @@
-package com.example.recipecompose.ui
+package com.example.recipecompose.ui.home
 
 
 import androidx.annotation.StringRes
