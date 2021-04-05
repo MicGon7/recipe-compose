@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.recipecompose.R
+import com.example.recipecompose.ui.components.CircularIndeterminateProgressBar
 import com.example.recipecompose.ui.recipelist.LoadingRecipeList
 import dev.chrisbanes.accompanist.coil.CoilImage
 
@@ -26,7 +27,17 @@ fun RecipeDetail(
     val scrollState = rememberScrollState()
 
     if (viewModel.loading) {
-        LoadingRecipeDetail(imageSize = 250.dp)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 52.dp)
+        ) {
+            LoadingRecipeDetail(imageSize = 250.dp)
+            CircularIndeterminateProgressBar(
+                isDisplayed = viewModel.loading,
+                verticalBias = 0.3f
+            )
+        }
     } else {
         Column(
             modifier = Modifier
@@ -86,9 +97,7 @@ fun RecipeDetail(
                 }
 
             }
-
         }
-
     }
 }
 

@@ -7,11 +7,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.recipecompose.ui.PAGE_SIZE
 import com.example.recipecompose.ui.RecipeListViewModel
+import com.example.recipecompose.ui.components.CircularIndeterminateProgressBar
+import com.example.recipecompose.ui.components.DefaultSnackbar
 import com.example.recipecompose.ui.components.RecipeCard
 
 @Composable
@@ -50,5 +53,11 @@ fun RecipeList(
                 }
             }
         }
+        CircularIndeterminateProgressBar(isDisplayed = loading, verticalBias = 0.4f)
+        DefaultSnackbar(
+            snackbarHostState = snackbarHostState,
+            modifier = Modifier.align(Alignment.BottomCenter),
+            onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() }
+        )
     }
 }

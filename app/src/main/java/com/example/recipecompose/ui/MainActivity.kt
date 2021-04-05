@@ -49,10 +49,7 @@ fun RecipeApp(baseApplication: BaseApplication) {
     val recipeListViewModel = hiltNavGraphViewModel<RecipeListViewModel>()
 
     AppTheme(
-        displayProgressBar = recipeListViewModel.loading,
-        scaffoldState = scaffoldState,
         darkTheme = baseApplication.isDark
-
     ) {
         Scaffold(
             topBar = {

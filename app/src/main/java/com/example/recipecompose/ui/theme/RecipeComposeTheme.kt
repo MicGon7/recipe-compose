@@ -47,8 +47,6 @@ private val DarkThemeColors = darkColors(
 @Composable
 fun AppTheme(
     darkTheme: Boolean,
-    displayProgressBar: Boolean,
-    scaffoldState: ScaffoldState,
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
@@ -56,18 +54,6 @@ fun AppTheme(
         typography = QuickSandTypography,
         shapes = AppShapes
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = if (!darkTheme) Grey1 else Black)
-        ) {
-            content()
-            CircularIndeterminateProgressBar(isDisplayed = displayProgressBar, verticalBias = 0.4f)
-            DefaultSnackbar(
-                snackbarHostState = scaffoldState.snackbarHostState,
-                onDismiss = { scaffoldState.snackbarHostState.currentSnackbarData?.dismiss() },
-                modifier = Modifier.align(Alignment.BottomCenter),
-            )
-        }
+        content()
     }
 }
