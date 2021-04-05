@@ -7,11 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.compose.*
-import com.example.recipecompose.ui.HomeViewModel
-import com.example.recipecompose.ui.HomeNavigationGraph
-import com.example.recipecompose.ui.Screen
 import com.example.recipecompose.ui.components.BottomNavBar
 import com.example.recipecompose.ui.components.SearchAppBar
+import com.example.recipecompose.ui.home.HomeNavigationGraph
+import com.example.recipecompose.ui.home.HomeViewModel
+import com.example.recipecompose.ui.home.Screen
 import com.example.recipecompose.ui.theme.AppTheme
 
 @ExperimentalAnimationApi

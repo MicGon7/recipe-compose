@@ -41,7 +41,6 @@ fun RecipeDetail(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(2.dp)
                 .verticalScroll(scrollState)
         ) {
             viewModel.recipe?.let { recipe ->
@@ -62,8 +61,7 @@ fun RecipeDetail(
                     },
                 )
                 Column(
-                    modifier = Modifier.padding(4.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                    modifier = Modifier.padding(8.dp),
                 ) {
                     Row {
                         Text(
@@ -86,12 +84,13 @@ fun RecipeDetail(
                         style = MaterialTheme.typography.h5,
                         color = MaterialTheme.colors.onSurface.copy(alpha = .5f)
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
                     recipe.ingredients.forEach { ingredient ->
                         Text(
                             text = ingredient,
                             style = MaterialTheme.typography.h5
                         )
+                        Spacer(modifier = Modifier.height(4.dp))
                     }
                 }
 

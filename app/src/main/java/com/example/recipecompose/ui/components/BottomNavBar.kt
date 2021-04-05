@@ -14,7 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.KEY_ROUTE
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigate
-import com.example.recipecompose.ui.Screen
+import com.example.recipecompose.ui.home.Screen
 
 
 @Composable

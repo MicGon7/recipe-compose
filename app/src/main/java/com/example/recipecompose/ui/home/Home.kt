@@ -11,8 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.recipecompose.ui.PAGE_SIZE
-import com.example.recipecompose.ui.HomeViewModel
 import com.example.recipecompose.ui.components.CircularIndeterminateProgressBar
 import com.example.recipecompose.ui.components.DefaultSnackbar
 import com.example.recipecompose.ui.components.RecipeCard
