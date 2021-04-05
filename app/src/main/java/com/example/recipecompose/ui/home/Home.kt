@@ -1,4 +1,4 @@
-package com.example.recipecompose.ui.recipelist
+package com.example.recipecompose.ui.home
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,14 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.recipecompose.ui.PAGE_SIZE
-import com.example.recipecompose.ui.RecipeListViewModel
+import com.example.recipecompose.ui.HomeViewModel
 import com.example.recipecompose.ui.components.CircularIndeterminateProgressBar
 import com.example.recipecompose.ui.components.DefaultSnackbar
 import com.example.recipecompose.ui.components.RecipeCard
 
 @Composable
-fun RecipeList(
-    recipeListViewModel: RecipeListViewModel = viewModel(),
+fun Home(
+    recipeListViewModel: HomeViewModel = viewModel(),
     snackbarHostState: SnackbarHostState,
     navigateToRecipeList: (Int) -> Unit
 ) {
@@ -28,6 +28,7 @@ fun RecipeList(
     val onChangeRecipeScrollPosition = recipeListViewModel::onChangeRecipeScrollPosition
     val page = recipeListViewModel.page
     val onNextPage = recipeListViewModel::onTriggerEvent
+
 
     // Box allows for overlay of composables--last composables shown on top
     Box(

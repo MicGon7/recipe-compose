@@ -32,35 +32,23 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit, preview: Boolean = false) {
 
             recipe.featuredImage?.let { url ->
                 // TODO: Remove preview check when Coil adds support for the preview feature.
-                if (!preview) {
-                    CoilImage(
-                        data = url,
-                        contentDescription = stringResource(R.string.recipe_image_cd),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(imageHeight),
-                        contentScale = ContentScale.Crop,
-                        error = {
-                            Image(
-                                painterResource(id = R.drawable.empty_plate),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(imageHeight)
-                            )
-                        },
-                    )
-                } else {
-                    Image(
-                        painterResource(id = R.drawable.featured_image),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(imageHeight),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-
+                CoilImage(
+                    data = url,
+                    contentDescription = stringResource(R.string.recipe_image_cd),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(imageHeight),
+                    contentScale = ContentScale.Crop,
+                    error = {
+                        Image(
+                            painterResource(id = R.drawable.empty_plate),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(imageHeight)
+                        )
+                    },
+                )
             }
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,

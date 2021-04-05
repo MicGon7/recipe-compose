@@ -10,8 +10,8 @@ import com.example.recipecompose.domain.model.Recipe
 import com.example.recipecompose.repository.RecipeRepository
 import com.example.recipecompose.ui.components.FoodCategory
 import com.example.recipecompose.ui.components.getFoodCategory
-import com.example.recipecompose.ui.recipelist.RecipeListEvent
-import com.example.recipecompose.ui.recipelist.RecipeListEvent.*
+import com.example.recipecompose.ui.home.RecipeListEvent
+import com.example.recipecompose.ui.home.RecipeListEvent.*
 import com.example.recipecompose.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -23,7 +23,7 @@ import javax.inject.Named
 const val PAGE_SIZE = 30
 
 @HiltViewModel
-class RecipeListViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val repository: RecipeRepository,
     @Named("auth_token")
     private val token: String,
@@ -32,7 +32,7 @@ class RecipeListViewModel @Inject constructor(
     var recipes: List<Recipe> by mutableStateOf(listOf())
         private set
 
-    var query: String by mutableStateOf("chicken")
+    var query: String by mutableStateOf("")
         private set
 
     var selectedCategory: FoodCategory? by mutableStateOf(null)
@@ -41,13 +41,13 @@ class RecipeListViewModel @Inject constructor(
     var categoryScrollPosition = 0
         private set
 
+    var page by mutableStateOf(1)
+
     var loading by mutableStateOf(false)
         private set
 
-    var showDetail by mutableStateOf(false)
+    var showNavigationBars by mutableStateOf(true)
         private set
-
-    var page by mutableStateOf(1)
 
     private var recipeListScrollPosition = 0
 
@@ -73,7 +73,6 @@ class RecipeListViewModel @Inject constructor(
         }
     }
 
-    // Usecase #1
     private suspend fun newSearch() {
         loading = true
         resetSearchState()
@@ -88,7 +87,7 @@ class RecipeListViewModel @Inject constructor(
         loading = false
     }
 
-    // Usecase #2
+    // TODO: Experiment with paging library instead
     private suspend fun nextPage() {
         // Prevent duplicate events due to recompose happening to quickly
         if ((recipeListScrollPosition + 1) >= (page * PAGE_SIZE)) {
@@ -127,11 +126,15 @@ class RecipeListViewModel @Inject constructor(
         categoryScrollPosition = position
     }
 
-    /**
-     * Append new recipes to current list of recipes
-     */
+    fun onChangeRecipeScrollPosition(position: Int) {
+        recipeListScrollPosition = position
+    }
 
-    fun appendRecipes(recipes: List<Recipe>) {
+    fun onShowDetail(showDetail: Boolean) {
+        this.showNavigationBars = showDetail
+    }
+
+    private fun appendRecipes(recipes: List<Recipe>) {
         val currentRecipes = ArrayList(recipes)
         currentRecipes.addAll(recipes)
 
@@ -141,10 +144,6 @@ class RecipeListViewModel @Inject constructor(
 
     private fun incrementPage() {
         page += 1
-    }
-
-    fun onChangeRecipeScrollPosition(position: Int) {
-        recipeListScrollPosition = position
     }
 
     private fun clearSelectedCategory() {
@@ -158,9 +157,5 @@ class RecipeListViewModel @Inject constructor(
         if (selectedCategory?.value != query) {
             clearSelectedCategory()
         }
-    }
-
-    fun onShowDetail(showDetail: Boolean) {
-        this.showDetail = showDetail
     }
 }

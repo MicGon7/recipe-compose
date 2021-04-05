@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.recipecompose.R
-import com.example.recipecompose.ui.recipelist.RecipeListEvent
+import com.example.recipecompose.ui.home.RecipeListEvent
 import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi

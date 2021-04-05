@@ -1,4 +1,4 @@
-package com.example.recipecompose.ui.recipelist
+package com.example.recipecompose.ui.home
 
 sealed class RecipeListEvent {
     object NewSearchEvent : RecipeListEvent()

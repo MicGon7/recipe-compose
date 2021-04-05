@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.recipecompose.R
 import com.example.recipecompose.ui.components.CircularIndeterminateProgressBar
-import com.example.recipecompose.ui.recipelist.LoadingRecipeList
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
@@ -101,18 +100,3 @@ fun RecipeDetail(
     }
 }
 
-// Feature UI Demo Composables
-@Composable
-fun Other() {
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "Other Screen", modifier = Modifier.align(Alignment.CenterHorizontally),
-            fontSize = 21.sp
-        )
-    }
-}

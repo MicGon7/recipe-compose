@@ -1,4 +1,4 @@
-package com.example.recipecompose.ui.recipelist
+package com.example.recipecompose.ui.home
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.lazy.LazyColumn

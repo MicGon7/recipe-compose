@@ -66,6 +66,7 @@ dependencies {
     implementation "androidx.activity:activity-compose:$compose_activity"
 
     implementation "androidx.navigation:navigation-compose:1.0.0-alpha09"
+
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha01'
 
@@ -83,5 +84,5 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glide"
 
     // Image Loading
-    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.6.1"
+    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.6.2"
 }
