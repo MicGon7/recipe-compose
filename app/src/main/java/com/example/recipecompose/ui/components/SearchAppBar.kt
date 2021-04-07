@@ -39,20 +39,11 @@ fun SearchAppBar(
     baseApplication: BaseApplication,
     scaffoldState: ScaffoldState
 ) {
-    val query = homeViewModel.query
-    val onQueryChange = homeViewModel::onQueryChange
-    val selectedCategory = homeViewModel.selectedCategory
-    val onSelectCategoryChange = homeViewModel::onSelectedCategoryChange
-    val onTriggerEvent = homeViewModel::onTriggerEvent
-    val scrollPosition = homeViewModel.categoryScrollPosition
-    val onScrollPositionChange = homeViewModel::onScrollPositionChange
-    val onToggleTheme = { baseApplication.toggleLightTheme() }
 
     // Can also use LocalFocusManager which is not experimental (but this is future)
     val keyboardController = LocalSoftwareKeyboardController.current
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
-
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -65,8 +56,8 @@ fun SearchAppBar(
                     modifier = Modifier
                         .fillMaxWidth(.9f)
                         .padding(8.dp),
-                    value = query,
-                    onValueChange = { newQuery -> onQueryChange(newQuery) },
+                    value = homeViewModel.query,
+                    onValueChange = { newQuery -> homeViewModel.onQueryChange(newQuery) },
                     label = { Text(text = stringResource(R.string.search)) },
                     leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
                     colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
@@ -75,12 +66,12 @@ fun SearchAppBar(
                         imeAction = ImeAction.Search//  Set (submit) icon to Magnify Glass
                     ),
                     keyboardActions = KeyboardActions(onSearch = {
-                        onTriggerEvent(HomeScreenEvents.NewSearchEvent)
+                        homeViewModel.onTriggerEvent(HomeScreenEvents.NewSearchEvent)
                         keyboardController?.hideSoftwareKeyboard()
                     }) {}
                 )
                 IconButton(
-                    onClick = { onToggleTheme() },
+                    onClick = { baseApplication.toggleLightTheme() },
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .padding(end = 8.dp)
@@ -94,17 +85,17 @@ fun SearchAppBar(
                     .horizontalScroll(scrollState)
             ) {
                 scope.launch {
-                    scrollState.scrollTo(scrollPosition)
+                    scrollState.scrollTo(homeViewModel.categoryScrollPosition)
                 }
                 for (category in getAllFoodCategories()) {
                     FoodCategoryChip(
                         category = category.value,
-                        isSelected = selectedCategory == category,
+                        isSelected = homeViewModel.selectedCategory == category,
                         onSelected = {
-                            onSelectCategoryChange(it)
-                            onScrollPositionChange(scrollState.value)
+                            homeViewModel.onSelectedCategoryChange(it)
+                            homeViewModel.onScrollPositionChange(scrollState.value)
                         },
-                        onToggleEvent = { onTriggerEvent(HomeScreenEvents.NewSearchEvent) },
+                        onToggleEvent = { homeViewModel.onTriggerEvent(HomeScreenEvents.NewSearchEvent) },
                         scaffoldState = scaffoldState
                     )
                 }
