@@ -28,29 +28,27 @@ fun RecipeApp(baseApplication: BaseApplication) {
                 AnimatedVisibility(
                     visible = homeViewModel.showNavigationBars,
                     enter = slideInVertically(initialOffsetY = { -40 })
-                            + expandVertically(expandFrom = Alignment.Top) + fadeIn(initialAlpha = 0.3f),
+                            + expandVertically(expandFrom = Alignment.Top)
+                            + fadeIn(initialAlpha = 0.3f),
                     exit = slideOutVertically() + shrinkVertically() + fadeOut()
                 ) {
                     SearchAppBar(
-                        query = homeViewModel.query,
-                        onQueryChange = homeViewModel::onQueryChange,
-                        selectedCategory = homeViewModel.selectedCategory,
-                        onSelectCategoryChange = homeViewModel::onSelectedCategoryChange,
-                        onNewSearchEvent = homeViewModel::onTriggerEvent,
-                        scrollPosition = homeViewModel.categoryScrollPosition,
-                        onScrollPositionChange = homeViewModel::onScrollPositionChange,
-                        onToggleTheme = {
-                            baseApplication.toggleLightTheme()
-                        },
+                        homeViewModel,
+                        baseApplication,
+                        scaffoldState
                     )
+
                 }
             },
             bottomBar = {
                 AnimatedVisibility(
                     homeViewModel.showNavigationBars,
                     enter = slideInVertically(initialOffsetY = { -40 })
-                            + expandVertically(expandFrom = Alignment.Bottom) + fadeIn(initialAlpha = 0.3f),
-                    exit = slideOutVertically() + shrinkVertically() + fadeOut()
+                            + expandVertically(expandFrom = Alignment.Bottom)
+                            + fadeIn(initialAlpha = 0.3f),
+                    exit = slideOutVertically(targetOffsetY = { 40 })
+                            + shrinkVertically(shrinkTowards = Alignment.Bottom)
+                            + fadeOut()
                 ) {
                     BottomNavBar(
                         navController,

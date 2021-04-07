@@ -10,8 +10,7 @@ import com.example.recipecompose.domain.model.Recipe
 import com.example.recipecompose.repository.RecipeRepository
 import com.example.recipecompose.ui.components.FoodCategory
 import com.example.recipecompose.ui.components.getFoodCategory
-import com.example.recipecompose.ui.home.RecipeListEvent
-import com.example.recipecompose.ui.home.RecipeListEvent.*
+import com.example.recipecompose.ui.home.HomeScreenEvents.*
 import com.example.recipecompose.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -55,7 +54,7 @@ class HomeViewModel @Inject constructor(
         onTriggerEvent(NewSearchEvent)
     }
 
-    fun onTriggerEvent(event: RecipeListEvent) {
+    fun onTriggerEvent(event: HomeScreenEvents) {
         viewModelScope.launch {
             try {
                 when (event) {

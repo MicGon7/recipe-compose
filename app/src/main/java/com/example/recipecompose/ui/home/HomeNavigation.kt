@@ -13,10 +13,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.navigate
 import com.example.recipecompose.R
-import com.example.recipecompose.ui.home.Home
 import com.example.recipecompose.ui.other.Other
 import com.example.recipecompose.ui.recipe.RecipeDetail
-import com.example.recipecompose.ui.recipe.RecipeEvent
+import com.example.recipecompose.ui.recipe.RecipeDetailEvents
 import com.example.recipecompose.ui.recipe.RecipeViewModel
 
 
@@ -51,7 +50,7 @@ fun HomeNavigationGraph(
             homeViewModel.onShowDetail(false)
 
             // Set the current recipe in the viewModel using it in navigation destination
-            recipeViewModel.onTriggerEvent(RecipeEvent.GetRecipeEvent(recipeId))
+            recipeViewModel.onTriggerEvent(RecipeDetailEvents.GetRecipeEvent(recipeId))
 
             RecipeDetail(recipeViewModel)
         }

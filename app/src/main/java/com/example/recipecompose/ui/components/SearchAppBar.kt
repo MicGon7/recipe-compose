@@ -24,28 +24,35 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.recipecompose.BaseApplication
 import com.example.recipecompose.R
-import com.example.recipecompose.ui.home.RecipeListEvent
+import com.example.recipecompose.ui.home.HomeViewModel
+import com.example.recipecompose.ui.home.HomeScreenEvents
 import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchAppBar(
-    modifier: Modifier = Modifier,
-    query: String,
-    onQueryChange: (String) -> Unit,
-    selectedCategory: FoodCategory?,
-    onSelectCategoryChange: (String) -> Unit,
-    onNewSearchEvent: (RecipeListEvent) -> Unit,
-    scrollPosition: Int,
-    onScrollPositionChange: (Int) -> Unit,
-    onToggleTheme: () -> Unit,
+    homeViewModel: HomeViewModel = viewModel(),
+    baseApplication: BaseApplication,
+    scaffoldState: ScaffoldState
 ) {
+    val query = homeViewModel.query
+    val onQueryChange = homeViewModel::onQueryChange
+    val selectedCategory = homeViewModel.selectedCategory
+    val onSelectCategoryChange = homeViewModel::onSelectedCategoryChange
+    val onTriggerEvent = homeViewModel::onTriggerEvent
+    val scrollPosition = homeViewModel.categoryScrollPosition
+    val onScrollPositionChange = homeViewModel::onScrollPositionChange
+    val onToggleTheme = { baseApplication.toggleLightTheme() }
+
     // Can also use LocalFocusManager which is not experimental (but this is future)
     val keyboardController = LocalSoftwareKeyboardController.current
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
+
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -53,11 +60,9 @@ fun SearchAppBar(
         elevation = 12.dp
     ) {
         Column {
-            Row(
-                modifier = modifier
-            ) {
+            Row {
                 TextField(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth(.9f)
                         .padding(8.dp),
                     value = query,
@@ -70,7 +75,7 @@ fun SearchAppBar(
                         imeAction = ImeAction.Search//  Set (submit) icon to Magnify Glass
                     ),
                     keyboardActions = KeyboardActions(onSearch = {
-                        onNewSearchEvent(RecipeListEvent.NewSearchEvent)
+                        onTriggerEvent(HomeScreenEvents.NewSearchEvent)
                         keyboardController?.hideSoftwareKeyboard()
                     }) {}
                 )
@@ -99,9 +104,8 @@ fun SearchAppBar(
                             onSelectCategoryChange(it)
                             onScrollPositionChange(scrollState.value)
                         },
-                        onSearch = {
-                            onNewSearchEvent(RecipeListEvent.NewSearchEvent)
-                        }
+                        onToggleEvent = { onTriggerEvent(HomeScreenEvents.NewSearchEvent) },
+                        scaffoldState = scaffoldState
                     )
                 }
             }
