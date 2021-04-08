@@ -1,5 +1,6 @@
 package com.example.recipecompose.di
 
+import com.example.recipecompose.database.RecipeDao
 import com.example.recipecompose.network.RecipeService
 import com.example.recipecompose.network.model.RecipeDtoMapper
 import com.example.recipecompose.repository.RecipeRepository
@@ -19,10 +20,12 @@ object RepositoryModule {
     fun provideRecipeRepository(
         recipeService: RecipeService,
         recipeMapper: RecipeDtoMapper,
+        recipeDao: RecipeDao
     ): RecipeRepository {
         return RecipeRepositoryImpl(
             recipeService = recipeService,
-            mapper = recipeMapper
+            mapper = recipeMapper,
+            recipeDao = recipeDao
         )
     }
 }
