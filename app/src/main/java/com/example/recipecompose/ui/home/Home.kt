@@ -34,7 +34,7 @@ fun Home(
     // TODO: Move this to a LoadingBox composable
     val animateAlpha = animateFloatAsState(targetValue = if (loading) 0.8f else 1f)
     val animatedProgress = animateFloatAsState(
-        targetValue = if (loading) 0.8f else 1f,
+        targetValue = if (loading) 0.95f else 1f,
         animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
     )
 

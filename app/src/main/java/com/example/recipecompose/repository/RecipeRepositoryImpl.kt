@@ -14,14 +14,6 @@ class RecipeRepositoryImpl(
 ) : RecipeRepository {
 
     override suspend fun search(token: String, page: Int, query: String): List<Recipe> {
-
-        val entities = recipeDao.getRecipes()
-        // TODO: Figure out how to make ROOM return null instead of empty list
-        if (!entities.isNullOrEmpty()) {
-            return entities.map { recipeEntity ->
-                RecipeEntity.toRecipe(recipeEntity)
-            }
-        }
         return mapper.toDomainList(
             recipeService.search(
                 token = token,

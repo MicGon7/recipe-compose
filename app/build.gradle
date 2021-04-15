@@ -1,3 +1,14 @@
+import dependencies.Android
+import dependencies.AnnotationProcessing
+import dependencies.Coil
+import dependencies.InstrumentationTest
+import dependencies.Square
+import dependencies.JetBrains
+import dependencies.UnitTest
+import dependencies.Versions
+import dependencies.AndroidX
+import dependencies.Google
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -5,15 +16,17 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
 }
+
+
 android {
     compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.example.recipecompose"
-        minSdkVersion 23
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion Versions.minSdk
+        targetSdkVersion Versions.targetSdk
+        versionCode Versions.versionCode
+        versionName Versions.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
@@ -40,73 +53,66 @@ android {
             targetCompatibility JavaVersion.VERSION_1_8
         }
         kotlinOptions {
-            jvmTarget = '1.8'
+            jvmTarget = Versions.jvmTarget
         }
+        // TODO: Remove once solution for testing is found
+        packagingOptions {
+            exclude "META-INF/AL2.0"
+            exclude "META-INF/LGPL2.1"
+        }
+
     }
 
     dependencies {
 
-        implementation 'androidx.core:core-ktx:1.3.2'
-        implementation 'androidx.navigation:navigation-runtime:2.3.4'
+        implementation AndroidX.core_ktx
+        implementation AndroidX.app_compat
+        implementation AndroidX.ui_tooling
+        implementation AndroidX.nav_fragment_ktx // will remove later
+        implementation AndroidX.nav_ui_ktx // will remove later
+        implementation AndroidX.compose_ui
+        implementation AndroidX.compose_foundation
+        implementation AndroidX.compose_material
+        implementation AndroidX.compose_icons_core
+        implementation AndroidX.compose_icons_extended
+        implementation AndroidX.navigation_compose
+        implementation AndroidX.navigation_hilt
+        implementation AndroidX.room_runtime
+        implementation AndroidX.room_ktx
+        implementation AndroidX.datastore
+        implementation AndroidX.constraint_layout
 
-        def app_compat = "1.2.0"
-        implementation "androidx.appcompat:appcompat:$app_compat"
 
-        def constraint_layout = "2.0.4"
-        implementation "androidx.constraintlayout:constraintlayout:$constraint_layout"
+        implementation Android.material
 
-        def compose = "1.0.0-beta03"
+        implementation Coil.accompanist_coil
 
-        implementation "androidx.compose.ui:ui:$compose"
-        implementation "androidx.compose.foundation:foundation:$compose"
-        implementation "androidx.compose.material:material:$compose"
-        implementation "androidx.compose.material:material-icons-core:$compose"
-        implementation "androidx.compose.material:material-icons-extended:$compose"
-        // Make sure androidx.compose is used or preview will not work
-        implementation "androidx.compose.ui:ui-tooling:$compose"
-        implementation 'com.google.android.material:material:1.3.0'
+        implementation Google.material
+        implementation Google.hilt_android
 
-        def compose_constraint = "1.0.0-alpha05"
-        implementation "androidx.constraintlayout:constraintlayout-compose:$compose_constraint"
+        implementation JetBrains.kotlin_stdlib
 
-        def compose_activity = "1.3.0-alpha05"
-        implementation "androidx.activity:activity-compose:$compose_activity"
+        implementation Square.retrofit
+        implementation Square.okHttp
+        implementation Square.leak_canary
+        implementation Square.moshi
+        implementation Square.moshi_converter
+        implementation Square.moshi_kotlin_codegen
 
-        implementation "androidx.navigation:navigation-compose:1.0.0-alpha09"
+        kapt AnnotationProcessing.hilt_compiler
+        kapt AnnotationProcessing.room_compiler
 
-        implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-        implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha01'
+        // TESTING
+        testImplementation UnitTest.jupiter_api
+        testImplementation UnitTest.jupiter_params
+        testRuntimeOnly UnitTest.jupiter_engine
 
-        def moshi = "1.11.0"
-        implementation "com.squareup.moshi:moshi-kotlin:$moshi"
-        implementation "com.squareup.moshi:moshi-kotlin-codegen:$moshi"
-        implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
+        // Mock web server
+        testImplementation UnitTest.mock_web_server
+        testImplementation UnitTest.okHttp
 
-        def hilt = "2.33-beta"
-        implementation "com.google.dagger:hilt-android:$hilt"
-        kapt "com.google.dagger:hilt-android-compiler:$hilt"
+        // compose testing
+        implementation InstrumentationTest.compose_ui
 
-        def glide = "4.11.0"
-        implementation "com.github.bumptech.glide:glide:$glide"
-        kapt "com.github.bumptech.glide:compiler:$glide"
-
-        // Image Loading
-        implementation "dev.chrisbanes.accompanist:accompanist-coil:0.6.2"
-
-        // Persistence Model
-        def room_version = "2.2.6"
-
-        implementation "androidx.room:room-runtime:$room_version"
-        kapt "androidx.room:room-compiler:$room_version"
-        // optional - Kotlin Extensions and Coroutines support for Room
-        implementation "androidx.room:room-ktx:$room_version"
-        // optional - Test helpers
-        testImplementation "androidx.room:room-testing:$room_version"
-
-        // Testing
-        testImplementation 'junit:junit:4.13.2'
-        testImplementation "com.google.truth:truth:1.1"
-        androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-        androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     }
 }
