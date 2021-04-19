@@ -64,7 +64,6 @@ android {
     }
 
     dependencies {
-
         implementation AndroidX.core_ktx
         implementation AndroidX.app_compat
         implementation AndroidX.ui_tooling

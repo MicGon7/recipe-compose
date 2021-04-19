@@ -1,11 +1,9 @@
 package com.example.recipecompose.repository
 
-import com.example.recipecompose.database.RecipeDao
-import com.example.recipecompose.database.RecipeEntity
+import com.example.recipecompose.data.cache.RecipeDao
 import com.example.recipecompose.domain.model.Recipe
-import com.example.recipecompose.network.RecipeService
-import com.example.recipecompose.network.model.RecipeDtoMapper
-import javax.inject.Inject
+import com.example.recipecompose.data.network.RecipeService
+import com.example.recipecompose.data.network.model.RecipeDtoMapper
 
 class RecipeRepositoryImpl(
     private val recipeService: RecipeService,
@@ -20,11 +18,7 @@ class RecipeRepositoryImpl(
                 page = page,
                 query = query
             ).recipes
-        ).also {
-            recipeDao.insertAll(it.map { recipe ->
-                RecipeEntity.from(recipe)
-            })
-        }
+        )
     }
 
     override suspend fun get(token: String, id: Int): Recipe {

@@ -7,18 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.compose.*
-import com.example.recipecompose.ui.components.BottomNavBar
-import com.example.recipecompose.ui.components.SearchAppBar
-import com.example.recipecompose.ui.home.HomeNavigationGraph
-import com.example.recipecompose.ui.home.HomeViewModel
-import com.example.recipecompose.ui.home.Screen
-import com.example.recipecompose.ui.theme.AppTheme
+import com.example.recipecompose.presentation.components.BottomNavBar
+import com.example.recipecompose.presentation.components.SearchAppBar
+import com.example.recipecompose.presentation.home.HomeNavigationGraph
+import com.example.recipecompose.presentation.home.HomeViewModel
+import com.example.recipecompose.presentation.home.Screens
+import com.example.recipecompose.presentation.theme.AppTheme
 
 @ExperimentalAnimationApi
 @Composable
 fun RecipeApp(baseApplication: BaseApplication) {
     val navController = rememberNavController()
-    val screens = listOf(Screen.Home, Screen.Other)
+    val screens = listOf(Screens.Home, Screens.Other)
     val homeViewModel = hiltNavGraphViewModel<HomeViewModel>()
     val scaffoldState = rememberScaffoldState()
 

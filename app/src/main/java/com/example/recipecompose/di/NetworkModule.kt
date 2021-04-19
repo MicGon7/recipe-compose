@@ -1,7 +1,7 @@
 package com.example.recipecompose.di
 
-import com.example.recipecompose.network.RecipeService
-import com.example.recipecompose.network.model.RecipeDtoMapper
+import com.example.recipecompose.data.network.RecipeService
+import com.example.recipecompose.data.network.model.RecipeDtoMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,7 +17,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRecipeMapper(): RecipeDtoMapper {
+    fun provideDtoRecipeMapper(): RecipeDtoMapper {
         return RecipeDtoMapper()
     }
 
