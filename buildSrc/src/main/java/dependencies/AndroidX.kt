@@ -32,6 +32,4 @@ object AndroidX {
     const val room_ktx = "androidx.room:room-ktx:${Versions.room}"
 
     const val datastore = "androidx.datastore:datastore-preferences:${Versions.datastore}"
-
-
 }

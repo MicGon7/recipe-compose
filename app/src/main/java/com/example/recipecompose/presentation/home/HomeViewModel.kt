@@ -7,15 +7,17 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipecompose.domain.model.Recipe
-import com.example.recipecompose.repository.RecipeRepository
 import com.example.recipecompose.presentation.components.FoodCategory
 import com.example.recipecompose.presentation.components.getFoodCategory
-import com.example.recipecompose.presentation.home.HomeEvents.*
+import com.example.recipecompose.presentation.home.HomeEvents.NewSearchEvent
+import com.example.recipecompose.presentation.home.HomeEvents.NextPageEvent
+import com.example.recipecompose.repository.RecipeRepository
+import com.example.recipecompose.usecase.SearchRecipes
 import com.example.recipecompose.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -23,6 +25,7 @@ const val PAGE_SIZE = 30
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val searchRecipes: SearchRecipes,
     private val repository: RecipeRepository,
     @Named("auth_token")
     private val token: String,
@@ -72,42 +75,53 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun newSearch() {
-        loading = true
-        resetSearchState()
-        delay(3000)
-        val result = repository.search(
-            token = token,
-            page = 1,
-            query = query
-        )
-        recipes = result
+    private fun newSearch() {
+        Log.d(TAG, "newSearch: query: $query, page: $page")
 
-        loading = false
+        resetSearchState()
+        searchRecipes.execute(
+            token = token,
+            page = page,
+            query = query
+        ).onEach { dataState ->
+            loading = dataState.loading
+
+            dataState.data?.let { list ->
+                recipes = list
+            }
+
+            dataState.error?.let { error ->
+                Log.e(TAG, "newSearch: $error")
+                // TODO: "Handle error"
+            }
+        }.launchIn(viewModelScope)
     }
 
     // TODO: Experiment with paging library instead
-    private suspend fun nextPage() {
+    private fun nextPage() {
         // Prevent duplicate events due to recompose happening to quickly
         if ((recipeListScrollPosition + 1) >= (page * PAGE_SIZE)) {
-            loading = true
             incrementPage()
             Log.d(TAG, "next page triggered: $page")
 
-            // Just to show pagination, api is fast
-            delay(1000)
-
-            // Don't call when app first launches
             if (page > 1) {
-                val result = repository.search(
+                searchRecipes.execute(
                     token = token,
                     page = page,
                     query = query
-                )
-                Log.d(TAG, "next page: $result")
-                appendRecipes(result)
+                ).onEach { dataState ->
+                    loading = dataState.loading
+
+                    dataState.data?.let { list ->
+                        appendRecipes(list)
+                    }
+
+                    dataState.error?.let { error ->
+                        Log.e(TAG, "nextPage: $error")
+                        // TODO: "Handle error"
+                    }
+                }.launchIn(viewModelScope)
             }
-            loading = false
         }
     }
 

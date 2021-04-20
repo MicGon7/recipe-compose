@@ -7,9 +7,12 @@ import com.example.recipecompose.domain.model.Recipe
 import com.example.recipecompose.data.network.RecipeService
 import com.example.recipecompose.data.network.model.RecipeDtoMapper
 import com.example.recipecompose.util.RECIPE_PAGINATION_PAGE_SIZE
+import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
 
 class SearchRecipes(
     private val recipeDao: RecipeDao,

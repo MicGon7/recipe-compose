@@ -1,13 +1,4 @@
-import dependencies.Android
-import dependencies.AnnotationProcessing
-import dependencies.Coil
-import dependencies.InstrumentationTest
-import dependencies.Square
-import dependencies.JetBrains
-import dependencies.UnitTest
-import dependencies.Versions
-import dependencies.AndroidX
-import dependencies.Google
+import dependencies.*
 
 plugins {
     id 'com.android.application'
@@ -78,9 +69,6 @@ android {
         implementation AndroidX.room_ktx
         implementation AndroidX.datastore
         implementation AndroidX.constraint_layout
-
-
-        implementation Android.material
 
         implementation Coil.accompanist_coil
 
