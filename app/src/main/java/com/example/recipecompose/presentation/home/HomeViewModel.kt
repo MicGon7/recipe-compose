@@ -9,10 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.recipecompose.domain.model.Recipe
 import com.example.recipecompose.presentation.components.FoodCategory
 import com.example.recipecompose.presentation.components.getFoodCategory
-import com.example.recipecompose.presentation.home.HomeEvents.NewSearchEvent
-import com.example.recipecompose.presentation.home.HomeEvents.NextPageEvent
-import com.example.recipecompose.repository.RecipeRepository
+import com.example.recipecompose.presentation.home.HomeEvent.NewSearchEvent
+import com.example.recipecompose.presentation.home.HomeEvent.NextPageEvent
+import com.example.recipecompose.usecase.RestoreRecipes
 import com.example.recipecompose.usecase.SearchRecipes
+import com.example.recipecompose.util.RECIPE_PAGINATION_PAGE_SIZE
 import com.example.recipecompose.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -21,12 +22,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
-const val PAGE_SIZE = 30
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val searchRecipes: SearchRecipes,
-    private val repository: RecipeRepository,
+    private val restoreRecipes: RestoreRecipes,
     @Named("auth_token")
     private val token: String,
 ) : ViewModel() {
@@ -54,10 +54,15 @@ class HomeViewModel @Inject constructor(
     private var recipeListScrollPosition = 0
 
     init {
-        onTriggerEvent(NewSearchEvent)
+        // TODO: Remove check as restore state is a rare case
+        if (recipeListScrollPosition != 0) {
+            onTriggerEvent(HomeEvent.RestoreStateEvent)
+        } else {
+            onTriggerEvent(NewSearchEvent)
+        }
     }
 
-    fun onTriggerEvent(event: HomeEvents) {
+    fun onTriggerEvent(event: HomeEvent) {
         viewModelScope.launch {
             try {
                 when (event) {
@@ -67,12 +72,34 @@ class HomeViewModel @Inject constructor(
                     is NextPageEvent -> {
                         nextPage()
                     }
+                    is HomeEvent.RestoreStateEvent -> {
+                        restoreState()
+                    }
                 }
 
             } catch (e: Exception) {
                 Log.e(TAG, "onTriggerEvent: Exception: ${e}, ${e.cause}")
             }
         }
+    }
+
+    private fun restoreState() {
+        restoreRecipes.execute(
+            page = page,
+            query = query
+        ).onEach { dataState ->
+            loading = dataState.loading
+
+            dataState.data?.let { list ->
+                recipes = list
+            }
+
+            dataState.error?.let { error ->
+                Log.e(TAG, "restoreState: $error")
+                // TODO: "Handle error"
+            }
+        }.launchIn(viewModelScope)
+
     }
 
     private fun newSearch() {
@@ -100,7 +127,7 @@ class HomeViewModel @Inject constructor(
     // TODO: Experiment with paging library instead
     private fun nextPage() {
         // Prevent duplicate events due to recompose happening to quickly
-        if ((recipeListScrollPosition + 1) >= (page * PAGE_SIZE)) {
+        if ((recipeListScrollPosition + 1) >= (page * RECIPE_PAGINATION_PAGE_SIZE)) {
             incrementPage()
             Log.d(TAG, "next page triggered: $page")
 

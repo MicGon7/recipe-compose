@@ -18,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.recipecompose.presentation.components.CircularIndeterminateProgressBar
 import com.example.recipecompose.presentation.components.DefaultSnackbar
 import com.example.recipecompose.presentation.components.RecipeCard
+import com.example.recipecompose.util.RECIPE_PAGINATION_PAGE_SIZE
 
 @Composable
 fun Home(
@@ -56,8 +57,8 @@ fun Home(
             LazyColumn {
                 itemsIndexed(recipes) { index, recipe ->
                     onChangeRecipeScrollPosition(index)
-                    if ((index + 1) >= (page * PAGE_SIZE) && !loading) {
-                        onNextPage(HomeEvents.NextPageEvent)
+                    if ((index + 1) >= (page * RECIPE_PAGINATION_PAGE_SIZE) && !loading) {
+                        onNextPage(HomeEvent.NextPageEvent)
                     }
                     RecipeCard(
                         recipe = recipe,

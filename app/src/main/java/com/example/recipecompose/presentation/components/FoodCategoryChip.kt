@@ -12,7 +12,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.recipecompose.presentation.home.HomeEvents
+import com.example.recipecompose.presentation.home.HomeEvent
 import kotlinx.coroutines.launch
 
 @Composable
@@ -20,7 +20,7 @@ fun FoodCategoryChip(
     category: String,
     isSelected: Boolean = false,
     onSelected: (String) -> Unit,
-    onToggleEvent: (HomeEvents) -> Unit,
+    onToggleEvent: (HomeEvent) -> Unit,
     scaffoldState: ScaffoldState
 ) {
     val scope = rememberCoroutineScope()
@@ -44,7 +44,7 @@ fun FoodCategoryChip(
                                 )
                             }
                         } else {
-                            onToggleEvent(HomeEvents.NewSearchEvent)
+                            onToggleEvent(HomeEvent.NewSearchEvent)
                         }
                     })
         ) {

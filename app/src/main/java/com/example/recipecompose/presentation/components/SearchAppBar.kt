@@ -28,7 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.recipecompose.BaseApplication
 import com.example.recipecompose.R
 import com.example.recipecompose.presentation.home.HomeViewModel
-import com.example.recipecompose.presentation.home.HomeEvents
+import com.example.recipecompose.presentation.home.HomeEvent
 import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
@@ -66,7 +66,7 @@ fun SearchAppBar(
                         imeAction = ImeAction.Search//  Set (submit) icon to Magnify Glass
                     ),
                     keyboardActions = KeyboardActions(onSearch = {
-                        homeViewModel.onTriggerEvent(HomeEvents.NewSearchEvent)
+                        homeViewModel.onTriggerEvent(HomeEvent.NewSearchEvent)
                         keyboardController?.hideSoftwareKeyboard()
                     }) {}
                 )
@@ -95,7 +95,7 @@ fun SearchAppBar(
                             homeViewModel.onSelectedCategoryChange(it)
                             homeViewModel.onScrollPositionChange(scrollState.value)
                         },
-                        onToggleEvent = { homeViewModel.onTriggerEvent(HomeEvents.NewSearchEvent) },
+                        onToggleEvent = { homeViewModel.onTriggerEvent(HomeEvent.NewSearchEvent) },
                         scaffoldState = scaffoldState
                     )
                 }
