@@ -54,12 +54,7 @@ class HomeViewModel @Inject constructor(
     private var recipeListScrollPosition = 0
 
     init {
-        // TODO: Remove check as restore state is a rare case
-        if (recipeListScrollPosition != 0) {
-            onTriggerEvent(HomeEvent.RestoreStateEvent)
-        } else {
-            onTriggerEvent(NewSearchEvent)
-        }
+        onTriggerEvent(NewSearchEvent)
     }
 
     fun onTriggerEvent(event: HomeEvent) {
