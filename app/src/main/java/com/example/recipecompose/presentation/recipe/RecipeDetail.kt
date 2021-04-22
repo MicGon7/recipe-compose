@@ -25,6 +25,8 @@ fun RecipeDetail(
 ) {
     val scrollState = rememberScrollState()
 
+    val dialogQueue = viewModel.dialogQueue.queue.value
+
     if (viewModel.loading) {
         Box(
             modifier = Modifier

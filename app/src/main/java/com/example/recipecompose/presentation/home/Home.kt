@@ -17,20 +17,23 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.recipecompose.presentation.components.CircularIndeterminateProgressBar
 import com.example.recipecompose.presentation.components.DefaultSnackbar
+import com.example.recipecompose.presentation.components.DisplayErrorDialog
 import com.example.recipecompose.presentation.components.RecipeCard
 import com.example.recipecompose.util.RECIPE_PAGINATION_PAGE_SIZE
 
 @Composable
 fun Home(
-    homeViewModel: HomeViewModel = viewModel(),
+    viewModel: HomeViewModel = viewModel(),
     snackbarHostState: SnackbarHostState,
     navigateToRecipeList: (Int) -> Unit
 ) {
-    val loading = homeViewModel.loading
-    val recipes = homeViewModel.recipes
-    val onChangeRecipeScrollPosition = homeViewModel::onChangeRecipeScrollPosition
-    val page = homeViewModel.page
-    val onNextPage = homeViewModel::onTriggerEvent
+    val loading = viewModel.loading
+    val recipes = viewModel.recipes
+    val onChangeRecipeScrollPosition = viewModel::onChangeRecipeScrollPosition
+    val page = viewModel.page
+    val onNextPage = viewModel::onTriggerEvent
+
+    val dialogQueue = viewModel.dialogQueue.queue.value
 
     // TODO: Move this to a LoadingBox composable
     val animateAlpha = animateFloatAsState(targetValue = if (loading) 0.8f else 1f)
@@ -39,7 +42,7 @@ fun Home(
         animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
     )
 
-   val modifier = Modifier.graphicsLayer(
+    val modifier = Modifier.graphicsLayer(
         alpha = animateAlpha.value,
         scaleY = animatedProgress.value,
         scaleX = animatedProgress.value
@@ -75,4 +78,5 @@ fun Home(
             onDismiss = { snackbarHostState.currentSnackbarData?.dismiss() }
         )
     }
+    DisplayErrorDialog(dialogQueue = dialogQueue)
 }

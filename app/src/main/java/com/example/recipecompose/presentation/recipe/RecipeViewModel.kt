@@ -3,23 +3,25 @@ package com.example.recipecompose.presentation.recipe
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipecompose.domain.model.Recipe
-import com.example.recipecompose.repository.RecipeRepository
+import com.example.recipecompose.presentation.DialogQueue
 import com.example.recipecompose.presentation.recipe.RecipeDetailEvents.GetRecipeEvent
+import com.example.recipecompose.usecase.recipedetail.GetRecipe
 import com.example.recipecompose.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
 @HiltViewModel
 class RecipeViewModel @Inject constructor(
-    private val recipeRepository: RecipeRepository,
+    private val getRecipe: GetRecipe,
     @Named("auth_token")
     private val token: String
 ) : ViewModel() {
@@ -30,6 +32,8 @@ class RecipeViewModel @Inject constructor(
         private set
 
     val onLoad: MutableState<Boolean> = mutableStateOf(false)
+
+    val dialogQueue = DialogQueue()
 
     fun onTriggerEvent(event: RecipeDetailEvents) {
         viewModelScope.launch {
@@ -51,11 +55,19 @@ class RecipeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getRecipe(id: Int) {
-        loading = true
-        delay(1000)
-        val recipe = recipeRepository.get(token = token, id = id)
-        this.recipe = recipe
+    private fun getRecipe(id: Int) {
+        getRecipe.execute(id, token).onEach { dataState ->
+            loading = dataState.loading
 
+            dataState.data?.let { data ->
+                recipe = data
+            }
+
+            dataState.error?.let { error ->
+                Log.e(TAG, "getRecipe $error")
+                dialogQueue.appendErrorMessage("Error", error)
+            }
+
+        }.launchIn(viewModelScope)
     }
 }

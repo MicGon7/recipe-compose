@@ -1,4 +1,4 @@
-package com.example.recipecompose.usecase
+package com.example.recipecompose.usecase.home
 
 import com.example.recipecompose.data.cache.RecipeDao
 import com.example.recipecompose.data.cache.model.RecipeEntityMapper

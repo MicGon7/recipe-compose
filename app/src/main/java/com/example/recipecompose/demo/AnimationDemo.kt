@@ -1,4 +1,4 @@
-package com.example.recipecompose.presentation.components
+package com.example.recipecompose.demo
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.recipecompose.R
+import com.example.recipecompose.presentation.components.AnimatedHeartButton
 
 
 @Composable

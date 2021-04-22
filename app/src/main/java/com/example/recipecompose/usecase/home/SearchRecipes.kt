@@ -1,4 +1,4 @@
-package com.example.recipecompose.usecase
+package com.example.recipecompose.usecase.home
 
 import com.example.recipecompose.data.cache.RecipeDao
 import com.example.recipecompose.data.cache.model.RecipeEntityMapper
@@ -7,12 +7,9 @@ import com.example.recipecompose.domain.model.Recipe
 import com.example.recipecompose.data.network.RecipeService
 import com.example.recipecompose.data.network.model.RecipeDtoMapper
 import com.example.recipecompose.util.RECIPE_PAGINATION_PAGE_SIZE
-import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
 
 class SearchRecipes(
     private val recipeDao: RecipeDao,
@@ -34,6 +31,7 @@ class SearchRecipes(
             // force error for testing
             if (query == "error") {
                 throw Exception("Search Failed!")
+
             }
 
             // TODO("Check if there is an internet connection")

@@ -1,18 +1,18 @@
 package com.example.recipecompose.presentation.home
 
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipecompose.domain.model.Recipe
+import com.example.recipecompose.presentation.DialogQueue
 import com.example.recipecompose.presentation.components.FoodCategory
 import com.example.recipecompose.presentation.components.getFoodCategory
 import com.example.recipecompose.presentation.home.HomeEvent.NewSearchEvent
 import com.example.recipecompose.presentation.home.HomeEvent.NextPageEvent
-import com.example.recipecompose.usecase.RestoreRecipes
-import com.example.recipecompose.usecase.SearchRecipes
+import com.example.recipecompose.usecase.home.RestoreRecipes
+import com.example.recipecompose.usecase.home.SearchRecipes
 import com.example.recipecompose.util.RECIPE_PAGINATION_PAGE_SIZE
 import com.example.recipecompose.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,6 +53,8 @@ class HomeViewModel @Inject constructor(
 
     private var recipeListScrollPosition = 0
 
+    val dialogQueue =  DialogQueue()
+
     init {
         onTriggerEvent(NewSearchEvent)
     }
@@ -78,6 +80,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    // This is a rare case but kept it here as an example
     private fun restoreState() {
         restoreRecipes.execute(
             page = page,
@@ -91,7 +94,7 @@ class HomeViewModel @Inject constructor(
 
             dataState.error?.let { error ->
                 Log.e(TAG, "restoreState: $error")
-                // TODO: "Handle error"
+                dialogQueue.appendErrorMessage("Error", error)
             }
         }.launchIn(viewModelScope)
 
@@ -114,7 +117,8 @@ class HomeViewModel @Inject constructor(
 
             dataState.error?.let { error ->
                 Log.e(TAG, "newSearch: $error")
-                // TODO: "Handle error"
+                dialogQueue.appendErrorMessage("Error", error)
+
             }
         }.launchIn(viewModelScope)
     }
@@ -140,7 +144,7 @@ class HomeViewModel @Inject constructor(
 
                     dataState.error?.let { error ->
                         Log.e(TAG, "nextPage: $error")
-                        // TODO: "Handle error"
+                        dialogQueue.appendErrorMessage("Error", error)
                     }
                 }.launchIn(viewModelScope)
             }
