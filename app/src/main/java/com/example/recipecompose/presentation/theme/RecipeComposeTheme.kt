@@ -3,16 +3,16 @@ package com.example.recipecompose.presentation.theme
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
-import com.example.recipecompose.presentation.components.DisplayErrorDialog
-import com.example.recipecompose.presentation.components.GenericDialog
-import com.example.recipecompose.presentation.components.GenericDialogInfo
-import java.util.*
+import com.example.recipecompose.presentation.components.ConnectivityMonitor
 
 private val LightThemeColors = lightColors(
     primary = Blue600,
@@ -45,13 +45,19 @@ private val DarkThemeColors = darkColors(
 @Composable
 fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     MaterialTheme(
         colors = if (darkTheme) DarkThemeColors else LightThemeColors,
         typography = QuickSandTypography,
         shapes = AppShapes
     ) {
-        content()
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = if (!darkTheme) Grey1 else Black)
+        ) {
+            content()
+        }
     }
 }

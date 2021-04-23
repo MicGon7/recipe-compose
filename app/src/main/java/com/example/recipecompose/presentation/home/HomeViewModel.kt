@@ -1,7 +1,8 @@
 package com.example.recipecompose.presentation.home
 
 import android.util.Log
-import androidx.compose.runtime.getValue import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +12,7 @@ import com.example.recipecompose.presentation.components.FoodCategory
 import com.example.recipecompose.presentation.components.getFoodCategory
 import com.example.recipecompose.presentation.home.HomeEvent.NewSearchEvent
 import com.example.recipecompose.presentation.home.HomeEvent.NextPageEvent
+import com.example.recipecompose.presentation.util.CustomConnectivityManager
 import com.example.recipecompose.usecase.home.RestoreRecipes
 import com.example.recipecompose.usecase.home.SearchRecipes
 import com.example.recipecompose.util.RECIPE_PAGINATION_PAGE_SIZE
@@ -27,6 +29,7 @@ import javax.inject.Named
 class HomeViewModel @Inject constructor(
     private val searchRecipes: SearchRecipes,
     private val restoreRecipes: RestoreRecipes,
+    private val connectivityManager: CustomConnectivityManager,
     @Named("auth_token")
     private val token: String,
 ) : ViewModel() {
@@ -53,7 +56,7 @@ class HomeViewModel @Inject constructor(
 
     private var recipeListScrollPosition = 0
 
-    val dialogQueue =  DialogQueue()
+    val dialogQueue = DialogQueue()
 
     init {
         onTriggerEvent(NewSearchEvent)
@@ -107,7 +110,8 @@ class HomeViewModel @Inject constructor(
         searchRecipes.execute(
             token = token,
             page = page,
-            query = query
+            query = query,
+            isNetworkAvailable = connectivityManager.isNetworkAvailable.value
         ).onEach { dataState ->
             loading = dataState.loading
 
@@ -134,7 +138,8 @@ class HomeViewModel @Inject constructor(
                 searchRecipes.execute(
                     token = token,
                     page = page,
-                    query = query
+                    query = query,
+                    connectivityManager.isNetworkAvailable.value
                 ).onEach { dataState ->
                     loading = dataState.loading
 

@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.recipecompose.domain.model.Recipe
 import com.example.recipecompose.presentation.DialogQueue
 import com.example.recipecompose.presentation.recipe.RecipeDetailEvents.GetRecipeEvent
+import com.example.recipecompose.presentation.util.CustomConnectivityManager
 import com.example.recipecompose.usecase.recipedetail.GetRecipe
 import com.example.recipecompose.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,15 +24,14 @@ import javax.inject.Named
 class RecipeViewModel @Inject constructor(
     private val getRecipe: GetRecipe,
     @Named("auth_token")
-    private val token: String
+    private val token: String,
+    private val connectivityManager: CustomConnectivityManager
 ) : ViewModel() {
     var recipe: Recipe? by mutableStateOf(null)
         private set
 
     var loading by mutableStateOf(false)
         private set
-
-    val onLoad: MutableState<Boolean> = mutableStateOf(false)
 
     val dialogQueue = DialogQueue()
 
@@ -56,13 +56,14 @@ class RecipeViewModel @Inject constructor(
     }
 
     private fun getRecipe(id: Int) {
-        getRecipe.execute(id, token).onEach { dataState ->
+        getRecipe.execute(id).onEach { dataState ->
             loading = dataState.loading
 
             dataState.data?.let { data ->
                 recipe = data
             }
 
+            // Should never happen
             dataState.error?.let { error ->
                 Log.e(TAG, "getRecipe $error")
                 dialogQueue.appendErrorMessage("Error", error)

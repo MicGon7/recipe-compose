@@ -21,7 +21,7 @@ import com.example.recipecompose.presentation.recipe.RecipeViewModel
 fun HomeNavigationGraph(
     navController: NavHostController,
     homeViewModel: HomeViewModel = viewModel(),
-    scaffoldState: ScaffoldState
+    scaffoldState: ScaffoldState,
 ) {
     NavHost(
         navController = navController,

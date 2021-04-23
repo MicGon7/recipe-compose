@@ -36,16 +36,12 @@ object UsecaseModule {
     @ViewModelScoped
     @Provides
     fun provideGetRecipe(
-        recipeService: RecipeService,
         recipeDao: RecipeDao,
         recipeEntity: RecipeEntityMapper,
-        recipeDtoMapper: RecipeDtoMapper
     ): GetRecipe {
         return GetRecipe(
-            recipeService = recipeService,
             recipeDao = recipeDao,
             entityMapper = recipeEntity,
-            dtoMapper = recipeDtoMapper
         )
     }
 

@@ -4,6 +4,7 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,10 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.recipecompose.presentation.components.CircularIndeterminateProgressBar
-import com.example.recipecompose.presentation.components.DefaultSnackbar
-import com.example.recipecompose.presentation.components.DisplayErrorDialog
-import com.example.recipecompose.presentation.components.RecipeCard
+import com.example.recipecompose.presentation.components.*
 import com.example.recipecompose.util.RECIPE_PAGINATION_PAGE_SIZE
 
 @Composable
