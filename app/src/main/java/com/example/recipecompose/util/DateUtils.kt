@@ -6,7 +6,6 @@ import java.util.*
 
 object DateUtils {
 
-    // Ex: November 4, 2021
     private val sdf = SimpleDateFormat("MMMMM d, yyyy")
 
     fun longToDate(long: Long): Date {
@@ -17,16 +16,16 @@ object DateUtils {
         return date.time / 1000 // return seconds
     }
 
-    fun dateToString(date: Date): String {
+    // Ex: November 4, 2021
+    fun dateToString(date: Date): String{
         return sdf.format(date)
     }
 
     fun stringToDate(string: String): Date {
-        return sdf.parse(string)
-            ?: throw NullPointerException("Could not convert date string to Date object.")
+        return sdf.parse(string) ?:throw NullPointerException("Could not convert date string to Date object.")
     }
 
-    fun createTimestamp(): Date {
+    fun createTimestamp(): Date{
         return Date()
     }
 }

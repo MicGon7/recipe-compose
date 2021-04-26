@@ -9,10 +9,4 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class BaseApplication : Application() {
 
-    var isDark: Boolean by mutableStateOf(false)
-
-    fun toggleLightTheme() {
-        isDark = !isDark
-    }
-
 }

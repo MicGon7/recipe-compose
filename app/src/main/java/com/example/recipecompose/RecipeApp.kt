@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.compose.*
+import com.example.recipecompose.datastore.SettingsDataStore
 import com.example.recipecompose.presentation.components.BottomNavBar
 import com.example.recipecompose.presentation.components.ConnectivityMonitor
 import com.example.recipecompose.presentation.components.SearchAppBar
@@ -17,14 +18,14 @@ import com.example.recipecompose.presentation.theme.AppTheme
 
 @ExperimentalAnimationApi
 @Composable
-fun RecipeApp(isNetworkAvailable: Boolean, baseApplication: BaseApplication) {
+fun RecipeApp(isNetworkAvailable: Boolean, settingsDataStore: SettingsDataStore) {
     val navController = rememberNavController()
     val screens = listOf(Screens.Home, Screens.Other)
     val homeViewModel = hiltNavGraphViewModel<HomeViewModel>()
     val scaffoldState = rememberScaffoldState()
 
     // TODO: Add global snackbar and loading indicator here
-    AppTheme(darkTheme = baseApplication.isDark) {
+    AppTheme(darkTheme = settingsDataStore.isDark) {
         Column {
             ConnectivityMonitor(isNetworkAvailable = isNetworkAvailable)
             Scaffold(
@@ -39,7 +40,7 @@ fun RecipeApp(isNetworkAvailable: Boolean, baseApplication: BaseApplication) {
                         Column() {
                             SearchAppBar(
                                 homeViewModel,
-                                baseApplication,
+                                settingsDataStore,
                                 scaffoldState
                             )
                         }

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import com.example.recipecompose.BaseApplication
 import com.example.recipecompose.RecipeApp
+import com.example.recipecompose.datastore.SettingsDataStore
 import com.example.recipecompose.presentation.util.CustomConnectivityManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -14,12 +15,11 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    // Temp to demo light/dark theme
-    @Inject
-    lateinit var baseApplication: BaseApplication
-
     @Inject
     lateinit var connectivityManager: CustomConnectivityManager
+
+    @Inject
+    lateinit var settingsDataStore: SettingsDataStore
 
     override fun onStart() {
         super.onStart()
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RecipeApp(
-                baseApplication = baseApplication,
+                settingsDataStore = settingsDataStore,
                 isNetworkAvailable = connectivityManager.isNetworkAvailable.value
             )
         }

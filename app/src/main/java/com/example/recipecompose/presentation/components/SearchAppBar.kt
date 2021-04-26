@@ -1,6 +1,6 @@
 package com.example.recipecompose.presentation.components
 
-import androidx.compose.animation.*
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,10 +25,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.recipecompose.BaseApplication
 import com.example.recipecompose.R
-import com.example.recipecompose.presentation.home.HomeViewModel
+import com.example.recipecompose.datastore.SettingsDataStore
 import com.example.recipecompose.presentation.home.HomeEvent
+import com.example.recipecompose.presentation.home.HomeViewModel
 import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SearchAppBar(
     homeViewModel: HomeViewModel = viewModel(),
-    baseApplication: BaseApplication,
+    settingsDataStore: SettingsDataStore,
     scaffoldState: ScaffoldState
 ) {
 
@@ -71,7 +71,7 @@ fun SearchAppBar(
                     }) {}
                 )
                 IconButton(
-                    onClick = { baseApplication.toggleLightTheme() },
+                    onClick = { settingsDataStore.toggleTheme() },
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .padding(end = 8.dp)
