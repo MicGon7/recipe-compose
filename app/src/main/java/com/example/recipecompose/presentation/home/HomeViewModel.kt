@@ -7,14 +7,14 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipecompose.domain.model.Recipe
-import com.example.recipecompose.presentation.DialogQueue
+import com.example.recipecompose.presentation.util.DialogQueue
 import com.example.recipecompose.presentation.components.FoodCategory
 import com.example.recipecompose.presentation.components.getFoodCategory
 import com.example.recipecompose.presentation.home.HomeEvent.NewSearchEvent
 import com.example.recipecompose.presentation.home.HomeEvent.NextPageEvent
 import com.example.recipecompose.presentation.util.CustomConnectivityManager
-import com.example.recipecompose.usecase.home.RestoreRecipes
-import com.example.recipecompose.usecase.home.SearchRecipes
+import com.example.recipecompose.interactors.home.RestoreRecipes
+import com.example.recipecompose.interactors.home.SearchRecipes
 import com.example.recipecompose.util.RECIPE_PAGINATION_PAGE_SIZE
 import com.example.recipecompose.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel

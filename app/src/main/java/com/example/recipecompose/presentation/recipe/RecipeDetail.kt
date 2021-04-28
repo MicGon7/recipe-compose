@@ -21,7 +21,7 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
 fun RecipeDetail(
-    viewModel: RecipeViewModel = viewModel()
+    viewModel: RecipeDetailViewModel = viewModel()
 ) {
     val scrollState = rememberScrollState()
 

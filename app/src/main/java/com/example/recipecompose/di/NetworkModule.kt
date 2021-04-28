@@ -1,7 +1,7 @@
 package com.example.recipecompose.di
 
-import com.example.recipecompose.data.network.RecipeService
-import com.example.recipecompose.data.network.model.RecipeDtoMapper
+import com.example.recipecompose.network.data.network.RecipeService
+import com.example.recipecompose.network.data.network.model.RecipeDtoMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -11,7 +11,7 @@ object Versions {
     const val kotlin = "1.4.30"
     const val gradle = "7.0.0-alpha11"
     const val hilt = "2.33-beta"
-    const val junit5 = "1.7.0.0"
+    const val junit5 = "1.7.1.1"
     const val kotlin_compiler_extension = "1.0.0-alpha11"
 
     const val core_ktx = "1.3.2"
@@ -29,6 +29,6 @@ object Versions {
     const val accompanist_coil = "0.6.2"
     const val leak_canary = "2.5"
     const val room = "2.2.6"
-    const val junit_jupiter = "5.7.0"
+    const val junit_jupiter = "5.7.1"
     const val datastore = "1.0.0-alpha06"
 }

@@ -2,10 +2,10 @@ package com.example.recipecompose.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.recipecompose.data.cache.RecipeDao
-import com.example.recipecompose.data.cache.database.dao.AppDatabase
-import com.example.recipecompose.data.cache.database.dao.DATABASE_NAME
-import com.example.recipecompose.data.cache.model.RecipeEntityMapper
+import com.example.recipecompose.network.data.cache.RecipeDao
+import com.example.recipecompose.network.data.cache.database.dao.AppDatabase
+import com.example.recipecompose.network.data.cache.database.dao.DATABASE_NAME
+import com.example.recipecompose.network.data.cache.model.RecipeEntityMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

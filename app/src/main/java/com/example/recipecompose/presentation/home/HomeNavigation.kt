@@ -14,7 +14,7 @@ import androidx.navigation.compose.navigate
 import com.example.recipecompose.presentation.other.Other
 import com.example.recipecompose.presentation.recipe.RecipeDetail
 import com.example.recipecompose.presentation.recipe.RecipeDetailEvents
-import com.example.recipecompose.presentation.recipe.RecipeViewModel
+import com.example.recipecompose.presentation.recipe.RecipeDetailViewModel
 
 
 @Composable
@@ -43,7 +43,7 @@ fun HomeNavigationGraph(
             arguments = listOf(navArgument("recipeId") { type = NavType.IntType })
         ) { backStackEntry ->
             val recipeId = backStackEntry.arguments?.getInt("recipeId") ?: -1
-            val recipeViewModel = hiltNavGraphViewModel<RecipeViewModel>()
+            val recipeViewModel = hiltNavGraphViewModel<RecipeDetailViewModel>()
 
             homeViewModel.onShowDetail(false)
 
