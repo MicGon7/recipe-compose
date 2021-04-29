@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
-import com.example.recipecompose.BaseApplication
 import com.example.recipecompose.RecipeApp
 import com.example.recipecompose.datastore.SettingsDataStore
 import com.example.recipecompose.presentation.util.CustomConnectivityManager

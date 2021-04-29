@@ -2,19 +2,20 @@ package com.example.recipecompose
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Scaffold import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
-import androidx.navigation.compose.*
+import androidx.navigation.compose.rememberNavController
 import com.example.recipecompose.datastore.SettingsDataStore
-import com.example.recipecompose.presentation.components.BottomNavBar
-import com.example.recipecompose.presentation.components.ConnectivityMonitor
-import com.example.recipecompose.presentation.components.SearchAppBar
-import com.example.recipecompose.presentation.home.HomeNavigationGraph
-import com.example.recipecompose.presentation.home.HomeViewModel
-import com.example.recipecompose.presentation.home.Screens
+import com.example.recipecompose.presentation.components.navigation.BottomNavBar
+import com.example.recipecompose.presentation.components.navigation.SearchAppBar
+import com.example.recipecompose.presentation.components.prompts.ConnectivityMonitor
 import com.example.recipecompose.presentation.theme.AppTheme
+import com.example.recipecompose.presentation.ui.home.HomeNavigationGraph
+import com.example.recipecompose.presentation.ui.home.HomeViewModel
+import com.example.recipecompose.presentation.ui.home.Screens
 
 @ExperimentalAnimationApi
 @Composable
@@ -23,6 +24,8 @@ fun RecipeApp(isNetworkAvailable: Boolean, settingsDataStore: SettingsDataStore)
     val screens = listOf(Screens.Home, Screens.Other)
     val homeViewModel = hiltNavGraphViewModel<HomeViewModel>()
     val scaffoldState = rememberScaffoldState()
+
+    val dialogQueue = homeViewModel.dialogQueue.queue.value
 
     // TODO: Add global snackbar and loading indicator here
     AppTheme(darkTheme = settingsDataStore.isDark) {

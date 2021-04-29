@@ -2,8 +2,8 @@ package com.example.recipecompose.presentation.util
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import com.example.recipecompose.presentation.components.GenericDialogInfo
-import com.example.recipecompose.presentation.components.PositiveAction
+import com.example.recipecompose.presentation.components.prompts.GenericDialogInfo
+import com.example.recipecompose.presentation.components.prompts.PositiveAction
 import java.util.*
 
 class DialogQueue {
