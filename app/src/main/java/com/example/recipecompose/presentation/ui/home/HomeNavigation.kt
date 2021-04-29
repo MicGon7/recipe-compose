@@ -12,9 +12,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.navigate
 import com.example.recipecompose.presentation.ui.other.Other
-import com.example.recipecompose.presentation.ui.recipe.RecipeDetail
-import com.example.recipecompose.presentation.ui.recipe.RecipeDetailEvents
-import com.example.recipecompose.presentation.ui.recipe.RecipeDetailViewModel
+import com.example.recipecompose.presentation.ui.recipedetails.RecipeDetail
+import com.example.recipecompose.presentation.ui.recipedetails.RecipeDetailEvents
+import com.example.recipecompose.presentation.ui.recipedetails.RecipeDetailViewModel
 
 
 @Composable
@@ -30,7 +30,7 @@ fun HomeNavigationGraph(
         composable(Screens.Home.route) {
             homeViewModel.onShowDetail(true)
 
-            Home(
+            HomeScreen(
                 homeViewModel,
                 scaffoldState.snackbarHostState,
             ) { recipeId ->

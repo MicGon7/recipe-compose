@@ -1,4 +1,4 @@
-package com.example.recipecompose.presentation.ui.recipe
+package com.example.recipecompose.presentation.ui.recipedetails
 
 import androidx.compose.animation.core.*
 import androidx.compose.runtime.Composable

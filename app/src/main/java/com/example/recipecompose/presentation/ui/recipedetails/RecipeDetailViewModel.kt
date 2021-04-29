@@ -1,4 +1,4 @@
-package com.example.recipecompose.presentation.ui.recipe
+package com.example.recipecompose.presentation.ui.recipedetails
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipecompose.domain.model.Recipe
 import com.example.recipecompose.presentation.util.DialogQueue
-import com.example.recipecompose.presentation.ui.recipe.RecipeDetailEvents.GetRecipeEvent
+import com.example.recipecompose.presentation.ui.recipedetails.RecipeDetailEvents.GetRecipeEvent
 import com.example.recipecompose.presentation.util.CustomConnectivityManager
 import com.example.recipecompose.interactors.recipe.GetRecipe
 import com.example.recipecompose.util.TAG

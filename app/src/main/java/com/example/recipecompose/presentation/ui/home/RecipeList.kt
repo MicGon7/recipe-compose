@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import com.example.recipecompose.domain.model.Recipe
 import com.example.recipecompose.presentation.components.cards.RecipeCard
-import com.example.recipecompose.presentation.ui.home.HomeEvent
 import com.example.recipecompose.util.RECIPE_PAGINATION_PAGE_SIZE
 
 @Composable

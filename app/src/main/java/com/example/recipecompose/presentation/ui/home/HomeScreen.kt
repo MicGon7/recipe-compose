@@ -20,7 +20,7 @@ import com.example.recipecompose.presentation.components.prompts.DefaultSnackbar
 import com.example.recipecompose.presentation.components.prompts.DisplayErrorDialog
 
 @Composable
-fun Home(
+fun HomeScreen(
     viewModel: HomeViewModel = viewModel(),
     snackbarHostState: SnackbarHostState,
     navigateToRecipeDetail: (Int) -> Unit
