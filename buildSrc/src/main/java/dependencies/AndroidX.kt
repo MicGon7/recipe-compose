@@ -4,7 +4,7 @@ object AndroidX {
 
     const val core_ktx = "androidx.core:core-ktx:${Versions.core_ktx}"
     const val app_compat = "androidx.appcompat:appcompat:${Versions.app_compat}"
-    const val ui_tooling = "androidx.ui:ui-tooling:${Versions.androidx_ui}"
+    const val ui_tooling = "androidx.compose.ui:ui-tooling:${Versions.androidx_ui}"
 
     // we will remove these 2 dependencies later when building the compose-only nav system
     const val nav_fragment_ktx =

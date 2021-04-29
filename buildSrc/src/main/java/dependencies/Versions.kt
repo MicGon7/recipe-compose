@@ -20,7 +20,7 @@ object Versions {
     const val compose = "1.0.0-beta03"
     const val constraint_layout = "1.0.0-alpha05"
     const val navigation_component = "2.3.4"
-    const val androidx_ui = "1.0.0-alpha07"
+    const val androidx_ui = "1.0.0-beta01"
     const val nav_compose = "1.0.0-alpha09"
     const val hilt_navigation = "1.0.0-alpha01"
     const val moshi = "1.11.0"

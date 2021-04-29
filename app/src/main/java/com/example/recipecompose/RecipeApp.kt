@@ -25,8 +25,6 @@ fun RecipeApp(isNetworkAvailable: Boolean, settingsDataStore: SettingsDataStore)
     val homeViewModel = hiltNavGraphViewModel<HomeViewModel>()
     val scaffoldState = rememberScaffoldState()
 
-    val dialogQueue = homeViewModel.dialogQueue.queue.value
-
     // TODO: Add global snackbar and loading indicator here
     AppTheme(darkTheme = settingsDataStore.isDark) {
         Column {
@@ -40,14 +38,13 @@ fun RecipeApp(isNetworkAvailable: Boolean, settingsDataStore: SettingsDataStore)
                                 + fadeIn(initialAlpha = 0.3f),
                         exit = slideOutVertically() + shrinkVertically() + fadeOut()
                     ) {
-                        Column() {
+                        Column {
                             SearchAppBar(
                                 homeViewModel,
                                 settingsDataStore,
                                 scaffoldState
                             )
                         }
-
                     }
                 },
                 bottomBar = {
