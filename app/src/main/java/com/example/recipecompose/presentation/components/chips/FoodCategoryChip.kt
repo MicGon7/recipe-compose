@@ -12,7 +12,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.recipecompose.presentation.ui.home.HomeEvent
+import com.example.recipecompose.presentation.ui.screens.home.util.HomeEvent
 import kotlinx.coroutines.launch
 
 @Composable

@@ -1,11 +1,11 @@
 package com.example.recipecompose.interactors.home
 
-import com.example.recipecompose.network.data.cache.RecipeDao
-import com.example.recipecompose.network.data.cache.model.RecipeEntityMapper
+import com.example.recipecompose.cache.RecipeDao
+import com.example.recipecompose.cache.model.RecipeEntityMapper
 import com.example.recipecompose.domain.data.DataState
 import com.example.recipecompose.domain.model.Recipe
-import com.example.recipecompose.network.data.network.RecipeService
-import com.example.recipecompose.network.data.network.model.RecipeDtoMapper
+import com.example.recipecompose.network.RecipeService
+import com.example.recipecompose.network.model.RecipeDtoMapper
 import com.example.recipecompose.util.RECIPE_PAGINATION_PAGE_SIZE
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

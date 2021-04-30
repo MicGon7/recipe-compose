@@ -1,10 +1,10 @@
 package com.example.recipecompose.di
 
-import com.example.recipecompose.network.data.cache.RecipeDao
-import com.example.recipecompose.network.data.cache.model.RecipeEntityMapper
-import com.example.recipecompose.network.data.network.RecipeService
-import com.example.recipecompose.network.data.network.model.RecipeDtoMapper
-import com.example.recipecompose.interactors.recipe.GetRecipe
+import com.example.recipecompose.cache.RecipeDao
+import com.example.recipecompose.cache.model.RecipeEntityMapper
+import com.example.recipecompose.network.RecipeService
+import com.example.recipecompose.network.model.RecipeDtoMapper
+import com.example.recipecompose.interactors.recipedetails.GetRecipe
 import com.example.recipecompose.interactors.home.RestoreRecipes
 import com.example.recipecompose.interactors.home.SearchRecipes
 import dagger.Module

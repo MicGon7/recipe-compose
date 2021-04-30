@@ -1,6 +1,6 @@
 package com.example.recipecompose.cache
 
-import com.example.recipecompose.network.data.cache.model.RecipeEntity
+import com.example.recipecompose.cache.model.RecipeEntity
 
 class AppDatabaseFake {
     val recipes = mutableListOf<RecipeEntity>()
