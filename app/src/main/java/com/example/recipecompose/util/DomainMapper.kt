@@ -1,4 +1,4 @@
-package com.example.recipecompose.domain.util
+package com.example.recipecompose.util
 
 interface DomainMapper <T, DomainModel>{
 

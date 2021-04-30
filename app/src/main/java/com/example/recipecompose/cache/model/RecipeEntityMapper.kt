@@ -1,7 +1,7 @@
 package com.example.recipecompose.cache.model
 
 import com.example.recipecompose.domain.model.Recipe
-import com.example.recipecompose.domain.util.DomainMapper
+import com.example.recipecompose.util.DomainMapper
 import com.example.recipecompose.util.DateUtils
 
 class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe> {

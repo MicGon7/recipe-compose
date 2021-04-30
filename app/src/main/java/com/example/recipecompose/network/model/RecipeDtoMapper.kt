@@ -1,7 +1,7 @@
 package com.example.recipecompose.network.model
 
 import com.example.recipecompose.domain.model.Recipe
-import com.example.recipecompose.domain.util.DomainMapper
+import com.example.recipecompose.util.DomainMapper
 import com.example.recipecompose.util.DateUtils
 
 class RecipeDtoMapper : DomainMapper<RecipeDto, Recipe> {
