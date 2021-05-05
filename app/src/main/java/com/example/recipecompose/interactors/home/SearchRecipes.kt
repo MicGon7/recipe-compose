@@ -32,7 +32,6 @@ class SearchRecipes(
             // force error for testing
             if (query == "error") {
                 throw Exception("Search Failed!")
-
             }
 
             // TODO("Check if there is an internet connection")

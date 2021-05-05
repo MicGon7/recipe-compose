@@ -15,7 +15,8 @@ constructor(
     private val connectionLiveData = ConnectionLiveData(application)
 
     // observe this in ui
-    val isNetworkAvailable = mutableStateOf(false)
+    // TODO: workaround for list not being populated automatically
+    val isNetworkAvailable = mutableStateOf(true)
 
     fun registerConnectionObserver(lifecycleOwner: LifecycleOwner){
         connectionLiveData.observe(lifecycleOwner, { isConnected ->
