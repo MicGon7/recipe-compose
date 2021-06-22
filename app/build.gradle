@@ -35,7 +35,11 @@ android {
         }
 
         buildTypes {
+            debug {
+                buildConfigField "String", "BASE_URL", "\"https://food2fork.ca/api/recipe/\""
+            }
             release {
+                buildConfigField "String", "BASE_URL", "\"https://food2fork.ca/api/recipe/\""
                 minifyEnabled false
                 proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             }

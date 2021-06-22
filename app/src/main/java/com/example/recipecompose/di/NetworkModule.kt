@@ -1,5 +1,6 @@
 package com.example.recipecompose.di
 
+import com.example.recipecompose.BuildConfig
 import com.example.recipecompose.network.RecipeService
 import com.example.recipecompose.network.model.RecipeDtoMapper
 import dagger.Module
@@ -25,7 +26,7 @@ object NetworkModule {
     @Provides
     fun provideRecipeService(): RecipeService {
         return Retrofit.Builder()
-            .baseUrl("https://food2fork.ca/api/recipe/")
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(RecipeService::class.java)

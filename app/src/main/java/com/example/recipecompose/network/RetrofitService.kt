@@ -8,7 +8,6 @@ import retrofit2.http.Query
 
 
 interface RecipeService {
-
     @GET("search")
     suspend fun search(
         @Header("Authorization") token: String,
