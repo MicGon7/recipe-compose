@@ -18,7 +18,7 @@ import com.example.recipecompose.domain.model.Recipe
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
-fun RecipeCard(recipe: Recipe, onClick: () -> Unit, preview: Boolean = false) {
+fun RecipeCard(recipe: Recipe, onClick: () -> Unit) {
     Card(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier

@@ -13,6 +13,7 @@ import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.navigate
 import com.example.recipecompose.presentation.ui.screens.home.HomeScreen
 import com.example.recipecompose.presentation.ui.screens.home.HomeViewModel
+import com.example.recipecompose.presentation.ui.screens.home.util.HomeEvent
 import com.example.recipecompose.presentation.ui.screens.home.util.Screens
 import com.example.recipecompose.presentation.ui.screens.other.Other
 import com.example.recipecompose.presentation.ui.screens.recipedetails.RecipeDetailScreen
@@ -23,7 +24,7 @@ import com.example.recipecompose.presentation.ui.screens.recipedetails.RecipeDet
 @Composable
 fun HomeNavigationGraph(
     navController: NavHostController,
-    homeViewModel: HomeViewModel = viewModel(),
+    viewModel: HomeViewModel = viewModel(),
     scaffoldState: ScaffoldState,
 ) {
     NavHost(
@@ -31,10 +32,14 @@ fun HomeNavigationGraph(
         startDestination = Screens.Home.route
     ) {
         composable(Screens.Home.route) {
-            homeViewModel.onShowDetail(true)
-
+            viewModel.onShowDetail(true)
             HomeScreen(
-                homeViewModel,
+                loading = viewModel.loading,
+                recipes = viewModel.recipes,
+                onChangeRecipeScrollPosition = viewModel::onChangeRecipeScrollPosition,
+                page = viewModel.page,
+                onNextPage = viewModel::onTriggerEvent,
+                dialogQueue = viewModel.dialogQueue.queue.value,
                 scaffoldState.snackbarHostState,
             ) { recipeId ->
                 navController.navigate("${Screens.RecipeDetail.route}/$recipeId")
@@ -48,7 +53,7 @@ fun HomeNavigationGraph(
             val recipeId = backStackEntry.arguments?.getInt("recipeId") ?: -1
             val recipeViewModel = hiltNavGraphViewModel<RecipeDetailViewModel>()
 
-            homeViewModel.onShowDetail(false)
+            viewModel.onShowDetail(false)
 
             // Set the current recipe in the viewModel using it in navigation destination
             recipeViewModel.onTriggerEvent(RecipeDetailEvents.GetRecipeEvent(recipeId))

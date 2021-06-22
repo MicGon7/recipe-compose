@@ -22,24 +22,23 @@ import com.example.recipecompose.presentation.ui.screens.home.util.Screens
 fun RecipeApp(isNetworkAvailable: Boolean, settingsDataStore: SettingsDataStore) {
     val navController = rememberNavController()
     val screens = listOf(Screens.Home, Screens.Other)
-    val homeViewModel = hiltNavGraphViewModel<HomeViewModel>()
+    val viewModel = hiltNavGraphViewModel<HomeViewModel>()
     val scaffoldState = rememberScaffoldState()
 
-    // TODO: Add global snackbar and loading indicator here
     AppTheme(darkTheme = settingsDataStore.isDark) {
         Column {
             ConnectivityMonitor(isNetworkAvailable = isNetworkAvailable)
             Scaffold(
                 topBar = {
                     AnimatedVisibility(
-                        visible = homeViewModel.showNavigationBars,
+                        visible = viewModel.showNavigationBars,
                         enter = slideInVertically(initialOffsetY = { -40 })
                                 + expandVertically(expandFrom = Alignment.Top)
                                 + fadeIn(initialAlpha = 0.3f),
                         exit = slideOutVertically() + shrinkVertically() + fadeOut()
                     ) {
                         SearchAppBar(
-                            homeViewModel,
+                            viewModel,
                             settingsDataStore,
                             scaffoldState
                         )
@@ -47,7 +46,7 @@ fun RecipeApp(isNetworkAvailable: Boolean, settingsDataStore: SettingsDataStore)
                 },
                 bottomBar = {
                     AnimatedVisibility(
-                        homeViewModel.showNavigationBars,
+                        viewModel.showNavigationBars,
                         enter = slideInVertically(initialOffsetY = { -40 })
                                 + expandVertically(expandFrom = Alignment.Bottom)
                                 + fadeIn(initialAlpha = 0.3f),
@@ -68,7 +67,7 @@ fun RecipeApp(isNetworkAvailable: Boolean, settingsDataStore: SettingsDataStore)
             ) {
                 HomeNavigationGraph(
                     navController = navController,
-                    homeViewModel = homeViewModel,
+                    viewModel = viewModel,
                     scaffoldState = scaffoldState
                 )
             }

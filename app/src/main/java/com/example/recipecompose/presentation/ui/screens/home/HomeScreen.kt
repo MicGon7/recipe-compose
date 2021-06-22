@@ -14,26 +14,27 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.recipecompose.domain.model.Recipe
 import com.example.recipecompose.presentation.components.loading.CircularIndeterminateProgressBar
 import com.example.recipecompose.presentation.components.loading.LoadingRecipeList
 import com.example.recipecompose.presentation.components.prompts.DefaultSnackbar
 import com.example.recipecompose.presentation.components.prompts.DisplayErrorDialog
+import com.example.recipecompose.presentation.components.prompts.GenericDialogInfo
 import com.example.recipecompose.presentation.ui.screens.home.components.RecipeList
+import com.example.recipecompose.presentation.ui.screens.home.util.HomeEvent
+import java.util.*
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = viewModel(),
+    loading: Boolean,
+    recipes: List<Recipe>,
+    onChangeRecipeScrollPosition: (Int) -> Unit,
+    page: Int,
+    onNextPage: (HomeEvent) -> Unit,
+    dialogQueue: Queue<GenericDialogInfo>?,
     snackbarHostState: SnackbarHostState,
     navigateToRecipeDetail: (Int) -> Unit
 ) {
-    val loading = viewModel.loading
-    val recipes = viewModel.recipes
-    val onChangeRecipeScrollPosition = viewModel::onChangeRecipeScrollPosition
-    val page = viewModel.page
-    val onNextPage = viewModel::onTriggerEvent
-
-    val dialogQueue = viewModel.dialogQueue.queue.value
-
     // TODO: Move this to a LoadingBox composable
     val animateAlpha = animateFloatAsState(targetValue = if (loading) 0.8f else 1f)
     val animatedProgress = animateFloatAsState(
